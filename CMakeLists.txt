@@ -36,8 +36,6 @@ set(SANITIZER_FLAGS
     -fsanitize=undefined
 )
 
-# MARK: Dependencies
-
 # MARK: Target
 
 add_subdirectory(src)

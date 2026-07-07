@@ -1,6 +1,6 @@
-#include <goon.hpp>
-#include <print>
+#include <window.hpp>
 
 auto main() -> int {
-    std::print("{}", test());
+    goon::Window window;
+    window.run();
 }
