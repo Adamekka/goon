@@ -10,12 +10,12 @@ class VBO final {
     explicit VBO(std::span<const Point> vertices);
 
     VBO(const VBO&) = delete;
-    VBO(VBO&&) = delete;
+    VBO(VBO&&) = default;
 
     ~VBO();
 
     auto operator=(const VBO&) -> VBO& = delete;
-    auto operator=(VBO&&) -> VBO& = delete;
+    auto operator=(VBO&&) -> VBO& = default;
 
     auto bind() const -> void;
     static auto unbind() -> void;

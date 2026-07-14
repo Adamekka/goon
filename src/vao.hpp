@@ -9,12 +9,12 @@ class VAO final {
     explicit VAO(const VBO& vbo);
 
     VAO(const VAO&) = delete;
-    VAO(VAO&&) = delete;
+    VAO(VAO&&) = default;
 
     ~VAO();
 
     auto operator=(const VAO&) -> VAO& = delete;
-    auto operator=(VAO&&) -> VAO& = delete;
+    auto operator=(VAO&&) -> VAO& = default;
 
     auto bind() const -> void;
     static auto unbind() -> void;

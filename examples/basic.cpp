@@ -14,11 +14,21 @@ auto main() -> int {
 
     goon::ShaderManager::instance().link();
 
-    const auto mesh{goon::Mesh{std::array{
-      goon::Point{0.0f, 0.5f, 0.0f},
-      goon::Point{-0.5f, -0.5f, 0.0f},
-      goon::Point{0.5f, -0.5f, 0.0f},
-    }}};
+    const auto triangle{std::array{
+      goon::Point{-0.9f, -0.4f, 0.0f},
+      goon::Point{-0.1f, -0.4f, 0.0f},
+      goon::Point{-0.5f, 0.4f, 0.0f}
+    }};
 
-    goon::Window::instance().run([&mesh]() -> void { mesh.draw(); });
+    const auto rectangle{std::array{
+      goon::Point{0.1f, -0.4f, 0.0f},
+      goon::Point{0.9f, -0.4f, 0.0f},
+      goon::Point{0.1f, 0.4f, 0.0f},
+      goon::Point{0.9f, 0.4f, 0.0f}
+    }};
+
+    goon::Window::instance().run([&triangle, &rectangle]() -> void {
+        goon::Mesh{triangle}.draw();
+        goon::Mesh{rectangle}.draw();
+    });
 }

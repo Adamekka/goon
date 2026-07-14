@@ -5,15 +5,24 @@
 
 namespace goon {
 
-struct Mesh final {
-    std::vector<Point> vertices;
-    const VBO vbo{this->vertices};
-    const VAO vao{this->vbo};
+class Mesh final {
+  public:
+    explicit Mesh(std::span<const Point> vertices);
 
-    explicit constexpr Mesh(std::span<const Point> vertices)
-        : vertices{vertices.begin(), vertices.end()} {}
+    Mesh(const Mesh&) = delete;
+    Mesh(Mesh&&) = default;
+
+    ~Mesh() = default;
+
+    auto operator=(const Mesh&) -> Mesh& = delete;
+    auto operator=(Mesh&&) -> Mesh& = default;
 
     auto draw() const -> void;
+
+  private:
+    std::vector<Point> vertices;
+    VBO vbo{this->vertices};
+    VAO vao{this->vbo};
 };
 
 } // namespace goon
