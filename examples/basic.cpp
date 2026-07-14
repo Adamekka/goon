@@ -1,6 +1,24 @@
-#include <window.hpp>
+#include "mesh.hpp"
+#include "shader_manager.hpp"
+#include "window.hpp"
 
 auto main() -> int {
-    goon::Window window;
-    window.run();
+    goon::Window::instance().init();
+
+    goon::ShaderManager::instance().compile(
+        "shaders/basic.vert", goon::ShaderType::Value::Vertex
+    );
+    goon::ShaderManager::instance().compile(
+        "shaders/basic.frag", goon::ShaderType::Value::Fragment
+    );
+
+    goon::ShaderManager::instance().link();
+
+    const auto mesh{goon::Mesh{std::array{
+      goon::Point{0.0f, 0.5f, 0.0f},
+      goon::Point{-0.5f, -0.5f, 0.0f},
+      goon::Point{0.5f, -0.5f, 0.0f}
+    }}};
+
+    goon::Window::instance().run([&mesh]() -> void { mesh.draw(); });
 }
