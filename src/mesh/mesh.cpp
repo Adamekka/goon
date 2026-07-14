@@ -1,7 +1,7 @@
 #include "mesh.hpp"
 #include "gl.hpp"
 
-namespace goon {
+namespace goon::mesh {
 
 Mesh::Mesh(std::span<const Point> vertices)
     : vertices{vertices.begin(), vertices.end()} {}
@@ -12,4 +12,4 @@ auto Mesh::draw() const -> void {
     );
 }
 
-} // namespace goon
+} // namespace goon::mesh

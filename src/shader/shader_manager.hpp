@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <vector>
 
-namespace goon {
+namespace goon::shader {
 
 class ShaderManager final {
   public:
@@ -29,4 +29,4 @@ class ShaderManager final {
     ~ShaderManager() = default;
 };
 
-} // namespace goon
+} // namespace goon::shader

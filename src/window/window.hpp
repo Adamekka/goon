@@ -3,7 +3,7 @@
 #include "gl.hpp"
 #include <functional>
 
-namespace goon {
+namespace goon::window {
 
 class Window final {
   public:
@@ -28,4 +28,4 @@ class Window final {
     ~Window();
 };
 
-} // namespace goon
+} // namespace goon::window

@@ -3,7 +3,7 @@
 #include "vao.hpp"
 #include <vector>
 
-namespace goon {
+namespace goon::mesh {
 
 class Mesh final {
   public:
@@ -25,4 +25,4 @@ class Mesh final {
     VAO vao{this->vbo};
 };
 
-} // namespace goon
+} // namespace goon::mesh

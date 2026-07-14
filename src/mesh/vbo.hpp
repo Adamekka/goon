@@ -3,7 +3,7 @@
 #include "point.hpp"
 #include <span>
 
-namespace goon {
+namespace goon::mesh {
 
 class VBO final {
   public:
@@ -24,4 +24,4 @@ class VBO final {
     uint32_t id{0};
 };
 
-} // namespace goon
+} // namespace goon::mesh

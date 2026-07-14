@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-namespace goon {
+namespace goon::window {
 
 Window::~Window() {
     if (this->window != nullptr) {
@@ -56,4 +56,4 @@ auto Window::run(const std::function<void()>& callback) const -> void {
     }
 }
 
-} // namespace goon
+} // namespace goon::window

@@ -1,7 +1,7 @@
 #include "vao.hpp"
 #include "gl.hpp"
 
-namespace goon {
+namespace goon::mesh {
 
 VAO::VAO(const VBO& vbo) {
     glGenVertexArrays(1, &this->id);
@@ -27,4 +27,4 @@ auto VAO::unbind() -> void {
     glBindVertexArray(0);
 }
 
-} // namespace goon
+} // namespace goon::mesh

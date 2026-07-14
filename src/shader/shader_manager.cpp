@@ -2,7 +2,7 @@
 #include <fstream>
 #include <print>
 
-namespace goon {
+namespace goon::shader {
 
 namespace {
 
@@ -60,4 +60,4 @@ auto ShaderManager::link() const -> void {
     }
 }
 
-} // namespace goon
+} // namespace goon::shader

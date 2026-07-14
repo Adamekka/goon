@@ -2,7 +2,7 @@
 
 #include "vbo.hpp"
 
-namespace goon {
+namespace goon::mesh {
 
 class VAO final {
   public:
@@ -23,4 +23,4 @@ class VAO final {
     uint32_t id{0};
 };
 
-} // namespace goon
+} // namespace goon::mesh
