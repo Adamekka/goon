@@ -12,7 +12,7 @@ auto check_shader_compile_status(const uint32_t shader) -> void {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
     if (!success) {
-        glGetShaderInfoLog(shader, 512, nullptr, info_log.data());
+        glGetShaderInfoLog(shader, info_log.size(), nullptr, info_log.data());
         std::println("{}", info_log.data());
     }
 }
