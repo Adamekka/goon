@@ -8,7 +8,9 @@ auto Mesh::draw() const -> void {
     const auto vbo{VBO{this->vertices}};
     const auto vao{VAO{vbo}};
 
-    glDrawArrays(GL_TRIANGLES, 0, static_cast<int32_t>(this->vertices.size()));
+    glDrawArrays(
+        GL_TRIANGLE_STRIP, 0, static_cast<int32_t>(this->vertices.size())
+    );
 }
 
 } // namespace goon
