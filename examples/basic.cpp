@@ -17,7 +17,7 @@ auto main() -> int {
     const auto mesh{goon::Mesh{std::array{
       goon::Point{0.0f, 0.5f, 0.0f},
       goon::Point{-0.5f, -0.5f, 0.0f},
-      goon::Point{0.5f, -0.5f, 0.0f}
+      goon::Point{0.5f, -0.5f, 0.0f},
     }}};
 
     goon::Window::instance().run([&mesh]() -> void { mesh.draw(); });
