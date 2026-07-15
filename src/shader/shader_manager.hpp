@@ -21,10 +21,10 @@ class ShaderManager final {
     auto link() const -> void;
 
   private:
-    const uint32_t shader_program;
+    const uint32_t shader_program{glCreateProgram()};
     std::vector<uint32_t> shaders;
 
-    ShaderManager();
+    ShaderManager() = default;
 
     ~ShaderManager() = default;
 };

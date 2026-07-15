@@ -19,9 +19,6 @@ auto check_shader_compile_status(const uint32_t shader) -> void {
 
 } // namespace
 
-ShaderManager::ShaderManager()
-    : shader_program{glCreateProgram()} {}
-
 auto ShaderManager::instance() -> ShaderManager& {
     static auto instance{ShaderManager{}};
     return instance;
