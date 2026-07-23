@@ -7,7 +7,7 @@ namespace goon::shader {
 namespace {
 
 auto check_shader_compile_status(const uint32_t shader) -> void {
-    auto success{int32_t{0}};
+    auto success{int32_t{}};
     auto info_log{std::array<char, 512>{}};
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
