@@ -18,7 +18,7 @@ struct Point final {
         , y{y}
         , z{z} {}
 
-    explicit constexpr Point(std::array<Value, 3> values)
+    constexpr explicit Point(std::array<Value, 3> values)
         : x{values[0]}
         , y{values[1]}
         , z{values[2]} {}
