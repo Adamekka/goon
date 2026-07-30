@@ -15,6 +15,7 @@ option(ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer
 # MARK: Warnings
 
 set(CXX_FLAGS
+    -fno-exceptions
     -Wall
     -Wcast-align
     -Wextra

@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "core/panic.hpp"
 
 namespace goon::window {
 
@@ -45,7 +46,7 @@ auto Window::init() -> void {
 
 auto Window::run(const std::function<void()>& callback) const -> void {
     if (this->window == nullptr) {
-        throw std::runtime_error{"Window not initialized"};
+        goon::panic("Failed to initialize window");
     }
 
     while (!glfwWindowShouldClose(this->window)) {
