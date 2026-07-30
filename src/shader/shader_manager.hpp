@@ -1,7 +1,9 @@
 #pragma once
 
+#include "shader_arg.hpp"
 #include "shader_type.hpp"
 #include <filesystem>
+#include <unordered_map>
 #include <vector>
 
 namespace goon::shader {
@@ -18,11 +20,20 @@ class ShaderManager final {
 
     auto compile(const std::filesystem::path& path, ShaderType type) -> void;
 
-    auto link() const -> void;
+    [[nodiscard]] auto link() -> std::unordered_map<std::string, ShaderArg>&;
+
+    [[nodiscard]] constexpr auto get_args()
+        -> std::unordered_map<std::string, ShaderArg>& {
+        return this->args;
+    }
+
+    [[nodiscard]] auto validate() const -> bool;
 
   private:
     const uint32_t shader_program{glCreateProgram()};
     std::vector<uint32_t> shaders;
+
+    std::unordered_map<std::string, ShaderArg> args;
 
     ShaderManager() = default;
 
