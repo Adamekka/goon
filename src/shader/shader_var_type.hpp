@@ -55,10 +55,11 @@ struct ShaderVarType final {
     } value;
 
     // NOLINTNEXTLINE(google-explicit-constructor)
-    ShaderVarType(Value value);
+    constexpr ShaderVarType(Value value)
+        : value{value} {}
 
-    // NOLINTNEXTLINE(google-explicit-constructor)
-    ShaderVarType(uint32_t value);
+    constexpr explicit ShaderVarType(uint32_t value)
+        : value{static_cast<Value>(value)} {}
 
     [[nodiscard]] constexpr auto description() const -> std::string_view {
         switch (this->value) {

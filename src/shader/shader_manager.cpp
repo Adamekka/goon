@@ -125,7 +125,9 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
 
 auto ShaderManager::validate() const -> bool {
     return std::ranges::all_of(
-        args, &ShaderArg::get_data_passed, &decltype(args)::value_type::second
+        this->args,
+        &ShaderArg::get_data_passed,
+        &decltype(this->args)::value_type::second
     );
 }
 

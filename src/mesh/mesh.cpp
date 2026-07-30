@@ -3,7 +3,7 @@
 
 namespace goon::mesh {
 
-Mesh::Mesh(std::span<const Point> vertices)
+Mesh::Mesh(const std::span<const Point> vertices)
     : vertices{vertices.begin(), vertices.end()} {}
 
 auto Mesh::draw() const -> void {
