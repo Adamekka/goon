@@ -13,7 +13,7 @@ class Window final {
     auto operator=(const Window&) -> Window& = delete;
     auto operator=(Window&&) -> Window& = delete;
 
-    static auto instance() -> Window&;
+    [[nodiscard]] static auto instance() -> Window&;
 
     auto init() -> void;
 

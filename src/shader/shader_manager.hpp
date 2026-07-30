@@ -16,7 +16,7 @@ class ShaderManager final {
     auto operator=(const ShaderManager&) -> ShaderManager& = delete;
     auto operator=(ShaderManager&&) -> ShaderManager& = delete;
 
-    static auto instance() -> ShaderManager&;
+    [[nodiscard]] static auto instance() -> ShaderManager&;
 
     auto compile(const std::filesystem::path& path, ShaderType type) -> void;
 
