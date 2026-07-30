@@ -49,7 +49,7 @@ auto Window::run(const std::function<void()>& callback) const -> void {
         goon::core::panic("Failed to initialize window");
     }
 
-    while (!glfwWindowShouldClose(this->window)) {
+    while (glfwWindowShouldClose(this->window) == 0) {
         callback();
 
         glfwSwapBuffers(this->window);
