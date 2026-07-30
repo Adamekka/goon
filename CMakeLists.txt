@@ -20,8 +20,6 @@ set(CXX_FLAGS
     -Wextra
     -Wformat
     -Wformat-security
-    -Wno-shadow
-    -Wno-unused-result
     -Wnull-dereference
     -Wredundant-decls
     -Wreturn-type
