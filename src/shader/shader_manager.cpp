@@ -123,6 +123,10 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
     return this->args;
 }
 
+auto ShaderManager::get_args() -> std::unordered_map<std::string, ShaderArg>& {
+    return this->args;
+}
+
 auto ShaderManager::validate() const -> bool {
     return std::ranges::all_of(
         this->args,

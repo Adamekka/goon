@@ -5,14 +5,14 @@
 namespace goon {
 
 [[noreturn]] auto panic(const std::string_view message) -> void {
-    const auto location{std::source_location::current()};
+    constexpr auto LOCATION{std::source_location::current()};
 
     std::println(
         "PANIC: {{}}\n  at {{}}:{{}} in {{}}",
         message,
-        location.file_name(),
-        location.line(),
-        location.function_name()
+        LOCATION.file_name(),
+        LOCATION.line(),
+        LOCATION.function_name()
     );
 
     std::abort();

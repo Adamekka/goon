@@ -22,10 +22,8 @@ class ShaderManager final {
 
     [[nodiscard]] auto link() -> std::unordered_map<std::string, ShaderArg>&;
 
-    [[nodiscard]] constexpr auto get_args()
-        -> std::unordered_map<std::string, ShaderArg>& {
-        return this->args;
-    }
+    [[nodiscard]] auto get_args()
+        -> std::unordered_map<std::string, ShaderArg>&;
 
     [[nodiscard]] auto validate() const -> bool;
 

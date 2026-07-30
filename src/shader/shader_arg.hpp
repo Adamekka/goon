@@ -6,7 +6,7 @@
 
 namespace goon::shader {
 
-template<typename T, std::size_t Columns, std::size_t Rows>
+template<typename T, size_t Columns, size_t Rows>
     requires(
         std::floating_point<T> && Columns >= 2 && Columns <= 4 && Rows >= 2
         && Rows <= 4
@@ -113,7 +113,12 @@ concept ShaderData = requires(const int32_t location, const T& data) {
 
 class ShaderArg final {
   public:
-    ShaderArg(ShaderVarType type, int32_t location, int32_t array_size);
+    constexpr ShaderArg(
+        ShaderVarType type, int32_t location, int32_t array_size
+    )
+        : type{type}
+        , location{location}
+        , array_size{array_size} {}
 
     ShaderArg(const ShaderArg&) = delete;
     ShaderArg(ShaderArg&&) = default;
