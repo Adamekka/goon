@@ -46,7 +46,7 @@ auto Window::init() -> void {
 
 auto Window::run(const std::function<void()>& callback) const -> void {
     if (this->window == nullptr) {
-        goon::panic("Failed to initialize window");
+        goon::core::panic("Failed to initialize window");
     }
 
     while (!glfwWindowShouldClose(this->window)) {

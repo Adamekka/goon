@@ -2,7 +2,7 @@
 #include <print>
 #include <source_location>
 
-namespace goon {
+namespace goon::core {
 
 [[noreturn]] auto panic(const std::string_view message) -> void {
     constexpr auto LOCATION{std::source_location::current()};
@@ -18,4 +18,4 @@ namespace goon {
     std::abort();
 }
 
-} // namespace goon
+} // namespace goon::core

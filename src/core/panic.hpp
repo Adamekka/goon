@@ -2,8 +2,8 @@
 
 #include <string_view>
 
-namespace goon {
+namespace goon::core {
 
 [[noreturn]] auto panic(std::string_view message) -> void;
 
-} // namespace goon
+} // namespace goon::core
