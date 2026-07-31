@@ -6,4 +6,5 @@
 #include <GLFW/glfw3.h>
 
 // Avoids unused includes warning
+auto glfwGetTime() -> double; // NOLINT(readability-redundant-declaration)
 using GLFWwindow = struct GLFWwindow;

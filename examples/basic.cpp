@@ -1,6 +1,8 @@
+#include "gl.hpp"
 #include "mesh/mesh.hpp"
 #include "shader/shader_manager.hpp"
 #include "window/window.hpp"
+#include <cmath>
 
 auto main() -> int {
     // MARK: Init
@@ -49,8 +51,27 @@ auto main() -> int {
 
     // MARK: Run
 
-    goon::window::Window::instance().run([&triangle, &rectangle]() -> void {
-        triangle.draw();
-        rectangle.draw();
-    });
+    goon::window::Window::instance().run(
+        [&triangle, &rectangle, &shader_args]() -> void {
+            // MARK: Pass shader data at runtime
+
+            const auto time{static_cast<float>(glfwGetTime())};
+            const auto color{(std::sin(time) + 1.0f) * 0.5f};
+
+            shader_args.at("vertex_color")
+                .pass_data(
+                    std::array{
+                      color,
+                      color,
+                      color,
+                      1.0f,
+                    }
+                );
+
+            // MARK: Draw
+
+            triangle.draw();
+            rectangle.draw();
+        }
+    );
 }
