@@ -93,7 +93,7 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
         glGetActiveUniformsiv(
             this->shader_program,
             1,
-            reinterpret_cast<const uint32_t*>(&i),
+            reinterpret_cast<const uint32_t* const>(&i),
             GL_UNIFORM_BLOCK_INDEX,
             &block_index
         );
