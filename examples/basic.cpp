@@ -23,14 +23,7 @@ auto main() -> int {
     auto& shader_args{goon::shader::ShaderManager::instance().link()};
 
     shader_args.at("vertex_color")
-        .pass_data(
-            std::array{
-              1.0f,
-              1.0f,
-              1.0f,
-              1.0f,
-            }
-        );
+        .pass_data(std::array{1.0f, 1.0f, 1.0f, 1.0f});
 
     assert(goon::shader::ShaderManager::instance().validate());
 
