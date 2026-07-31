@@ -4,7 +4,7 @@
 
 namespace goon::core {
 
-[[noreturn]] auto panic(const std::string_view message) -> void {
+auto panic(const std::string_view message) -> void {
     constexpr auto LOCATION{std::source_location::current()};
 
     std::println(
