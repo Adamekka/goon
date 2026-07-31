@@ -9,10 +9,32 @@ VAO::VAO(const VBO& vbo) {
     this->bind();
     vbo.bind();
 
+    // MARK: Position
+
     // I'd like to compare with GL_FLOAT instead
-    static_assert(std::same_as<Point::Value, float>);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Point), nullptr);
+    static_assert(std::same_as<Pos::Value, float>);
+    glVertexAttribPointer(
+        0, Pos::DIMENSION, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr
+    );
     glEnableVertexAttribArray(0);
+
+    // MARK: Color
+
+    // I'd like to compare with GL_FLOAT instead
+    static_assert(std::same_as<Color::Value, float>);
+    glVertexAttribPointer(
+        1,
+        Color::DIMENSION,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(Vertex),
+        // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
+        // NOLINTBEGIN(performance-no-int-to-ptr)
+        reinterpret_cast<const void* const>(offsetof(Vertex, color))
+        // NOLINTEND(performance-no-int-to-ptr)
+        // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+    );
+    glEnableVertexAttribArray(1);
 }
 
 VAO::~VAO() {

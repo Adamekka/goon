@@ -7,7 +7,7 @@ namespace goon::mesh {
 
 class Mesh final {
   public:
-    explicit Mesh(std::span<const Point> vertices);
+    explicit Mesh(std::span<const Vertex> vertices);
 
     Mesh(const Mesh&) = delete;
     Mesh(Mesh&&) = default;
@@ -20,7 +20,7 @@ class Mesh final {
     auto draw() const -> void;
 
   private:
-    std::vector<Point> vertices;
+    std::vector<Vertex> vertices;
     VBO vbo{this->vertices};
     VAO vao{this->vbo};
 };

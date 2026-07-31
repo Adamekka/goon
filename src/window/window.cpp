@@ -50,6 +50,8 @@ auto Window::run(const std::function<void()>& callback) const -> void {
     }
 
     while (glfwWindowShouldClose(this->window) == 0) {
+        glClear(GL_COLOR_BUFFER_BIT);
+
         callback();
 
         glfwSwapBuffers(this->window);

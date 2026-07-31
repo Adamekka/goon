@@ -1,13 +1,13 @@
 #pragma once
 
-#include "point.hpp"
+#include "vertex.hpp"
 #include <span>
 
 namespace goon::mesh {
 
 class VBO final {
   public:
-    explicit VBO(std::span<const Point> vertices);
+    explicit VBO(std::span<const Vertex> vertices);
 
     VBO(const VBO&) = delete;
     VBO(VBO&&) = default;

@@ -3,12 +3,12 @@
 
 namespace goon::mesh {
 
-VBO::VBO(const std::span<const Point> vertices) {
+VBO::VBO(const std::span<const Vertex> vertices) {
     glGenBuffers(1, &this->id);
     this->bind();
     glBufferData(
         GL_ARRAY_BUFFER,
-        static_cast<int64_t>(sizeof(Point) * vertices.size()),
+        static_cast<int64_t>(sizeof(Vertex) * vertices.size()),
         vertices.data(),
         GL_STATIC_DRAW
     );
