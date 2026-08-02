@@ -1,5 +1,4 @@
 #include "shader_manager.hpp"
-#include <algorithm>
 #include <fstream>
 #include <print>
 
@@ -125,14 +124,6 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
 
 auto ShaderManager::get_args() -> std::unordered_map<std::string, ShaderArg>& {
     return this->args;
-}
-
-auto ShaderManager::validate() const -> bool {
-    return std::ranges::all_of(
-        this->args,
-        &ShaderArg::get_data_passed,
-        &decltype(this->args)::value_type::second
-    );
 }
 
 } // namespace goon::shader

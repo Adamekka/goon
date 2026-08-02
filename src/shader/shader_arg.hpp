@@ -128,10 +128,9 @@ class ShaderArg final {
     auto operator=(const ShaderArg&) -> ShaderArg& = delete;
     auto operator=(ShaderArg&&) -> ShaderArg& = default;
 
-    template<detail::ShaderData T> auto pass_data(const T& data) -> void {
+    template<detail::ShaderData T> auto pass_data(const T& data) const -> void {
         assert(this->type.value == detail::ShaderDataTraits<T>::SHADER_TYPE);
         detail::ShaderDataTraits<T>::pass(this->location, data);
-        this->data_passed = true;
     }
 
     [[nodiscard]] constexpr auto get_type() const -> ShaderVarType {
@@ -146,16 +145,10 @@ class ShaderArg final {
         return this->array_size;
     }
 
-    [[nodiscard]] constexpr auto get_data_passed() const -> bool {
-        return this->data_passed;
-    }
-
   private:
     ShaderVarType type;
     int32_t location;
     int32_t array_size;
-
-    bool data_passed{false};
 };
 
 } // namespace goon::shader
