@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "core/panic.hpp"
+#include "stb/stb_image.h"
 
 namespace goon::window {
 
@@ -16,6 +17,8 @@ auto Window::instance() -> Window& {
 }
 
 auto Window::init() -> void {
+    // MARK: OpenGL setup
+
     glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -42,6 +45,10 @@ auto Window::init() -> void {
     FRAMEBUFFER_SIZE_CALLBACK(nullptr, WIDTH, HEIGHT);
 
     glfwSetFramebufferSizeCallback(this->window, FRAMEBUFFER_SIZE_CALLBACK);
+
+    // MARK: stb setup
+
+    stbi_set_flip_vertically_on_load(1);
 }
 
 auto Window::run(const std::function<void()>& callback) const -> void {
