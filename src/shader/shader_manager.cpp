@@ -88,15 +88,14 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
 
         auto block_index{int32_t{}};
 
-        // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
         glGetActiveUniformsiv(
             this->shader_program,
             1,
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             reinterpret_cast<const uint32_t* const>(&i),
             GL_UNIFORM_BLOCK_INDEX,
             &block_index
         );
-        // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
 
         // Members of named uniform blocks are supplied through UBOs,
         // not through glUniform*.

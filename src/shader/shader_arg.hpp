@@ -20,8 +20,7 @@ namespace detail {
 
 template<typename T> struct ShaderDataTraits;
 
-// NOLINTBEGIN(bugprone-macro-parentheses)
-// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+// NOLINTBEGIN(bugprone-macro-parentheses, cppcoreguidelines-macro-usage)
 
 #define GOON_SHADER_SCALAR(TYPE, ENUM, FUNCTION)                               \
     template<> struct ShaderDataTraits<TYPE> final {                           \
@@ -56,8 +55,7 @@ template<typename T> struct ShaderDataTraits;
         }                                                                      \
     };
 
-// NOLINTEND(cppcoreguidelines-macro-usage)
-// NOLINTEND(bugprone-macro-parentheses)
+// NOLINTEND(bugprone-macro-parentheses, cppcoreguidelines-macro-usage)
 
 GOON_SHADER_SCALAR(float, Float, glUniform1f)
 GOON_SHADER_VECTOR(float, 2, Vec2, glUniform2fv)
