@@ -5,6 +5,7 @@ add_library(
     STATIC
         ${SOURCES}
         ${PROJECT_SOURCE_DIR}/deps/glad/src/gl.c
+        ${PROJECT_SOURCE_DIR}/deps/stb/stb_image.c
 )
 
 set_target_properties(
