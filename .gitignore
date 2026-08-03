@@ -20,3 +20,5 @@ CMakeUserPresets.json
 /result
 a.out
 /lib
+
+src/lib*

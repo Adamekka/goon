@@ -1,12 +1,6 @@
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS *.cpp)
 
-add_library(
-    ${PROJECT_NAME}
-    STATIC
-        ${SOURCES}
-        ${PROJECT_SOURCE_DIR}/deps/glad/src/gl.c
-        ${PROJECT_SOURCE_DIR}/deps/stb/stb_image.c
-)
+add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 set_target_properties(
     ${PROJECT_NAME}
@@ -18,7 +12,6 @@ target_include_directories(
     ${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${PROJECT_SOURCE_DIR}/deps
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE ${CXX_FLAGS})
@@ -30,10 +23,26 @@ endif()
 
 # MARK: - Dependencies
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/deps/glad/include)
+# glad
+add_library(glad STATIC ${PROJECT_SOURCE_DIR}/deps/glad/src/gl.c)
+target_include_directories(glad PUBLIC ${PROJECT_SOURCE_DIR}/deps/glad/include)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad)
 
+# glfw
 find_package(glfw3 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
 
+# OpenGL
 find_package(OpenGL REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+
+# stb
+add_library(stb STATIC ${PROJECT_SOURCE_DIR}/deps/stb/src/stb_image.c)
+target_include_directories(
+    stb
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}/deps/stb/include
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/deps/stb/include/stb
+)
+target_link_libraries(${PROJECT_NAME} PRIVATE stb)
