@@ -1,20 +1,10 @@
 #pragma once
 
+#include "matrix.hpp"
 #include "shader_var_type.hpp"
-#include <array>
 #include <cassert>
 
 namespace goon::shader {
-
-template<typename T, size_t Columns, size_t Rows>
-    requires(
-        std::floating_point<T> && Columns >= 2 && Columns <= 4 && Rows >= 2
-        && Rows <= 4
-    )
-struct ShaderMatrix final {
-    // OpenGL consumes this flat storage in column-major order with GL_FALSE.
-    std::array<T, Columns * Rows> values;
-};
 
 namespace detail {
 
@@ -43,9 +33,8 @@ template<typename T> struct ShaderDataTraits;
     };
 
 #define GOON_SHADER_MATRIX(TYPE, COLUMNS, ROWS, ENUM, FUNCTION)                \
-    template<>                                                                 \
-    struct ShaderDataTraits<ShaderMatrix<TYPE, COLUMNS, ROWS>> final {         \
-        using Data = ShaderMatrix<TYPE, COLUMNS, ROWS>;                        \
+    template<> struct ShaderDataTraits<Matrix<TYPE, COLUMNS, ROWS>> final {    \
+        using Data = Matrix<TYPE, COLUMNS, ROWS>;                              \
                                                                                \
         static constexpr auto SHADER_TYPE{ShaderVarType::Value::ENUM};         \
         static_assert(sizeof(Data) == sizeof(decltype(Data::values)));         \
@@ -112,7 +101,9 @@ concept ShaderData = requires(const int32_t location, const T& data) {
 class ShaderArg final {
   public:
     constexpr ShaderArg(
-        ShaderVarType type, int32_t location, int32_t array_size
+        const ShaderVarType type,
+        const int32_t location,
+        const int32_t array_size
     )
         : type{type}
         , location{location}
