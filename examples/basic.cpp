@@ -1,14 +1,14 @@
 #include "mesh/mesh.hpp"
 #include "shader/shader_manager.hpp"
 #include "window/window.hpp"
-#include <cmath>
+#include <numbers>
 
 auto main() -> int {
     // MARK: Init
 
     goon::window::Window::instance().init();
 
-    // MARK: Create shaders
+    // MARK: Compile shaders
 
     goon::shader::ShaderManager::instance().compile(
         "shaders/basic.vert", goon::shader::ShaderType::Value::Vertex
@@ -17,11 +17,7 @@ auto main() -> int {
         "shaders/basic.frag", goon::shader::ShaderType::Value::Fragment
     );
 
-    // MARK: Pass shader data
-
     auto& shader_args{goon::shader::ShaderManager::instance().link()};
-
-    shader_args.at("offset").pass_data(std::array{0.0f, 0.0f, 0.0f});
 
     // MARK: Create textures
 
@@ -82,14 +78,18 @@ auto main() -> int {
 
     goon::window::Window::instance().run(
         [&shader_args, &triangle, &rectangle]() -> void {
-            // MARK: Pass shader data at runtime
+            // MARK: Transformation matrix
+
+            auto transform{goon::shader::Matrix<float, 4, 4>::identity()};
+            transform.scale(std::array{0.5f, 0.5f, 0.5f});
 
             const auto time{static_cast<float>(glfwGetTime())};
-            const auto offset_y{std::sin(time) / 2.0f};
+            constexpr auto ROTATION_SPEED{std::numbers::pi_v<float> / 2.0f};
+            transform.rotate_z(time * ROTATION_SPEED);
 
-            shader_args.at("offset").pass_data(
-                std::array{0.0f, offset_y, 0.0f}
-            );
+            // MARK: Pass shader data
+
+            shader_args.at("transform").pass_data(transform);
 
             // MARK: Draw
 
