@@ -31,10 +31,12 @@ set(CXX_FLAGS
     -fstack-protector-strong
 )
 
-set(SANITIZER_FLAGS
-    -fsanitize=address
-    -fsanitize=undefined
-)
+if(ENABLE_SANITIZERS)
+    set(SANITIZER_FLAGS
+        -fsanitize=address
+        -fsanitize=undefined
+    )
+endif()
 
 # MARK: Target
 
