@@ -16,13 +16,13 @@ auto main() -> int {
     shader_program.compile(
         "examples/assets/shaders/basic.vert",
         goon::object::material::shader::ShaderType{
-          goon::object::material::shader::ShaderType::Value::Vertex
+            goon::object::material::shader::ShaderType::Value::Vertex
         }
     );
     shader_program.compile(
         "examples/assets/shaders/basic.frag",
         goon::object::material::shader::ShaderType{
-          goon::object::material::shader::ShaderType::Value::Fragment
+            goon::object::material::shader::ShaderType::Value::Fragment
         }
     );
 
@@ -31,72 +31,72 @@ auto main() -> int {
     // MARK: Create textures
 
     const auto osaka_texture{goon::object::material::texture::Texture{
-      "examples/assets/textures/osaka.jpg"
+        "examples/assets/textures/osaka.jpg"
     }};
 
     const auto yui_texture{goon::object::material::texture::Texture{
-      "examples/assets/textures/yui.jpg"
+        "examples/assets/textures/yui.jpg"
     }};
 
     // MARK: Create materials
 
     const auto osaka_material{
-      goon::object::material::Material{shader_program, osaka_texture}
+        goon::object::material::Material{shader_program, osaka_texture}
     };
 
     const auto yui_material{
-      goon::object::material::Material{shader_program, yui_texture}
+        goon::object::material::Material{shader_program, yui_texture}
     };
 
     // MARK: Create objects
 
     auto osaka{goon::object::Object{
-      goon::object::mesh::Mesh{std::array{
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
-          goon::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{0.0f, 0.0f}
-        },
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{0.4f, -0.4f, 0.0f},
-          goon::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{1.0f, 0.0f}
-        },
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{0.0f, 0.4f, 0.0f},
-          goon::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{0.5f, 1.0f}
-        }
-      }},
-      osaka_material,
-      goon::matrix::Matrix<float, 4, 4>::identity()
+        goon::object::mesh::Mesh{std::array{
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
+                goon::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{0.0f, 0.0f}
+            },
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{0.4f, -0.4f, 0.0f},
+                goon::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{1.0f, 0.0f}
+            },
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{0.0f, 0.4f, 0.0f},
+                goon::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{0.5f, 1.0f}
+            }
+        }},
+        osaka_material,
+        goon::matrix::Matrix<float, 4, 4>::identity()
     }};
 
     auto yui{goon::object::Object{
-      goon::object::mesh::Mesh{std::array{
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
-          goon::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{0.0f, 0.0f}
-        },
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{0.4f, -0.4f, 0.0f},
-          goon::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{1.0f, 0.0f}
-        },
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{-0.4f, 0.4f, 0.0f},
-          goon::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{0.0f, 1.0f}
-        },
-        goon::object::mesh::Vertex{
-          goon::object::mesh::Pos{0.4f, 0.4f, 0.0f},
-          goon::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-          goon::object::mesh::TextureCoordinates{1.0f, 1.0f}
-        }
-      }},
-      yui_material,
-      goon::matrix::Matrix<float, 4, 4>::identity()
+        goon::object::mesh::Mesh{std::array{
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
+                goon::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{0.0f, 0.0f}
+            },
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{0.4f, -0.4f, 0.0f},
+                goon::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{1.0f, 0.0f}
+            },
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{-0.4f, 0.4f, 0.0f},
+                goon::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{0.0f, 1.0f}
+            },
+            goon::object::mesh::Vertex{
+                goon::object::mesh::Pos{0.4f, 0.4f, 0.0f},
+                goon::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
+                goon::object::mesh::TextureCoordinates{1.0f, 1.0f}
+            }
+        }},
+        yui_material,
+        goon::matrix::Matrix<float, 4, 4>::identity()
     }};
 
     // MARK: Run

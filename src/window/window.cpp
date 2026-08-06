@@ -37,9 +37,9 @@ auto Window::init() -> void {
     gladLoadGL(reinterpret_cast<GLADloadfunc>(glfwGetProcAddress));
 
     constexpr auto FRAMEBUFFER_SIZE_CALLBACK{
-      []([[maybe_unused]] GLFWwindow* const window,
-         const int32_t width,
-         const int32_t height) -> void { glViewport(0, 0, width, height); }
+        []([[maybe_unused]] GLFWwindow* const window,
+           const int32_t width,
+           const int32_t height) -> void { glViewport(0, 0, width, height); }
     };
 
     FRAMEBUFFER_SIZE_CALLBACK(nullptr, WIDTH, HEIGHT);

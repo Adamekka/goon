@@ -6,7 +6,7 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Empty
 BinPackArguments: false
 BinPackParameters: false
-BracedInitializerIndentWidth: 2
+BracedInitializerIndentWidth: 4
 BreakBeforeBinaryOperators: All
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma

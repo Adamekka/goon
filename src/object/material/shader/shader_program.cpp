@@ -15,8 +15,8 @@ auto ShaderProgram::compile(
 ) -> void {
     auto shader_source_stream{std::ifstream{path}};
     const auto source{std::string{
-      std::istreambuf_iterator<char>{shader_source_stream},
-      std::istreambuf_iterator<char>{}
+        std::istreambuf_iterator<char>{shader_source_stream},
+        std::istreambuf_iterator<char>{}
     }};
 
     const auto shader{glCreateShader(type.get())};
@@ -26,18 +26,18 @@ auto ShaderProgram::compile(
     glCompileShader(shader);
 
     constexpr auto CHECK_SHADER_COMPILE_STATUS{
-      [&](const uint32_t shader) -> void {
-          auto success{int32_t{}};
-          auto info_log{std::array<char, 512>{}};
-          glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        [&](const uint32_t shader) -> void {
+            auto success{int32_t{}};
+            auto info_log{std::array<char, 512>{}};
+            glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
-          if (success == 0) {
-              glGetShaderInfoLog(
-                  shader, info_log.size(), nullptr, info_log.data()
-              );
-              std::println("{}", info_log.data());
-          }
-      }
+            if (success == 0) {
+                glGetShaderInfoLog(
+                    shader, info_log.size(), nullptr, info_log.data()
+                );
+                std::println("{}", info_log.data());
+            }
+        }
     };
 
     CHECK_SHADER_COMPILE_STATUS(shader);
