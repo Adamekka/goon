@@ -3,7 +3,7 @@
 #include "gl.hpp"
 #include <string_view>
 
-namespace goon::shader {
+namespace goon::object::material::shader {
 
 struct ShaderVarType final {
     enum class Value : uint16_t {
@@ -108,4 +108,4 @@ struct ShaderVarType final {
     }
 };
 
-} // namespace goon::shader
+} // namespace goon::object::material::shader

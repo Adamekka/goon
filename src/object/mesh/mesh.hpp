@@ -1,16 +1,13 @@
 #pragma once
 
-#include "texture.hpp"
 #include "vao.hpp"
 #include <vector>
 
-namespace goon::mesh {
+namespace goon::object::mesh {
 
 class Mesh final {
   public:
-    Mesh(
-        std::span<const Vertex> vertices, std::shared_ptr<const Texture> texture
-    );
+    explicit Mesh(std::span<const Vertex> vertices);
 
     Mesh(const Mesh&) = delete;
     Mesh(Mesh&&) = default;
@@ -26,7 +23,6 @@ class Mesh final {
     std::vector<Vertex> vertices;
     VBO vbo{this->vertices};
     VAO vao{this->vbo};
-    std::shared_ptr<const Texture> texture;
 };
 
-} // namespace goon::mesh
+} // namespace goon::object::mesh

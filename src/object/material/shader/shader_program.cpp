@@ -1,30 +1,16 @@
-#include "shader_manager.hpp"
+#include "shader_program.hpp"
 #include <fstream>
 #include <print>
 
-namespace goon::shader {
+namespace goon::object::material::shader {
 
-namespace {
-
-auto check_shader_compile_status(const uint32_t shader) -> void {
-    auto success{int32_t{}};
-    auto info_log{std::array<char, 512>{}};
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-
-    if (success == 0) {
-        glGetShaderInfoLog(shader, info_log.size(), nullptr, info_log.data());
-        std::println("{}", info_log.data());
+ShaderProgram::~ShaderProgram() {
+    if (this->id != 0) {
+        glDeleteProgram(this->id);
     }
 }
 
-} // namespace
-
-auto ShaderManager::instance() -> ShaderManager& {
-    static auto instance{ShaderManager{}};
-    return instance;
-}
-
-auto ShaderManager::compile(
+auto ShaderProgram::compile(
     const std::filesystem::path& path, const ShaderType type
 ) -> void {
     auto shader_source_stream{std::ifstream{path}};
@@ -39,18 +25,46 @@ auto ShaderManager::compile(
 
     glCompileShader(shader);
 
-    check_shader_compile_status(shader);
+    constexpr auto CHECK_SHADER_COMPILE_STATUS{
+      [&](const uint32_t shader) -> void {
+          auto success{int32_t{}};
+          auto info_log{std::array<char, 512>{}};
+          glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+          if (success == 0) {
+              glGetShaderInfoLog(
+                  shader, info_log.size(), nullptr, info_log.data()
+              );
+              std::println("{}", info_log.data());
+          }
+      }
+    };
+
+    CHECK_SHADER_COMPILE_STATUS(shader);
 
     this->shaders.emplace_back(shader);
-    glAttachShader(this->shader_program, shader);
+    glAttachShader(this->id, shader);
 }
 
-auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
-    glLinkProgram(this->shader_program);
+auto ShaderProgram::link() -> std::unordered_map<std::string, ShaderArg>& {
+    glLinkProgram(this->id);
 
-    check_shader_compile_status(this->shader_program);
+    constexpr auto CHECK_SHADER_LINK_STATUS{[&](const uint32_t shader) -> void {
+        auto success{int32_t{}};
+        auto info_log{std::array<char, 512>{}};
+        glGetProgramiv(shader, GL_LINK_STATUS, &success);
 
-    glUseProgram(this->shader_program);
+        if (success == 0) {
+            glGetProgramInfoLog(
+                shader, info_log.size(), nullptr, info_log.data()
+            );
+            std::println("{}", info_log.data());
+        }
+    }};
+
+    CHECK_SHADER_LINK_STATUS(this->id);
+
+    glUseProgram(this->id);
 
     for (const auto shader : this->shaders) {
         glDeleteShader(shader);
@@ -61,10 +75,8 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
     auto uniform_count{int32_t{}};
     auto max_name_length{int32_t{}};
 
-    glGetProgramiv(this->shader_program, GL_ACTIVE_UNIFORMS, &uniform_count);
-    glGetProgramiv(
-        this->shader_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_name_length
-    );
+    glGetProgramiv(this->id, GL_ACTIVE_UNIFORMS, &uniform_count);
+    glGetProgramiv(this->id, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_name_length);
 
     this->args.clear();
     this->args.reserve(uniform_count);
@@ -77,7 +89,7 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
         auto type{uint32_t{}};
 
         glGetActiveUniform(
-            this->shader_program,
+            this->id,
             i,
             max_name_length,
             &name_len,
@@ -89,7 +101,7 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
         auto block_index{int32_t{}};
 
         glGetActiveUniformsiv(
-            this->shader_program,
+            this->id,
             1,
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             reinterpret_cast<const uint32_t* const>(&i),
@@ -103,9 +115,7 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
             continue;
         }
 
-        const auto location{
-          glGetUniformLocation(this->shader_program, name.data())
-        };
+        const auto location{glGetUniformLocation(this->id, name.data())};
 
         if (location == -1) {
             // Unexpected for an active default-block uniform.
@@ -121,8 +131,16 @@ auto ShaderManager::link() -> std::unordered_map<std::string, ShaderArg>& {
     return this->args;
 }
 
-auto ShaderManager::get_args() -> std::unordered_map<std::string, ShaderArg>& {
+auto ShaderProgram::bind() const -> void {
+    glUseProgram(this->id);
+}
+
+auto ShaderProgram::unbind() -> void {
+    glUseProgram(0);
+}
+
+auto ShaderProgram::get_args() -> std::unordered_map<std::string, ShaderArg>& {
     return this->args;
 }
 
-} // namespace goon::shader
+} // namespace goon::object::material::shader

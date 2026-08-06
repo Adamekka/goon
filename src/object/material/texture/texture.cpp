@@ -3,7 +3,7 @@
 #include "gl.hpp"
 #include "stb/stb_image.h"
 
-namespace goon::mesh {
+namespace goon::object::material::texture {
 
 Texture::Texture(const std::filesystem::path& path) {
     glGenTextures(1, &this->id);
@@ -31,8 +31,22 @@ Texture::Texture(const std::filesystem::path& path) {
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+Texture::Texture(Texture&& other) noexcept
+    : id{std::exchange(other.id, 0)} {}
+
 Texture::~Texture() {
-    glDeleteTextures(1, &this->id);
+    if (this->id != 0) {
+        glDeleteTextures(1, &this->id);
+    }
+}
+
+auto Texture::operator=(Texture&& other) noexcept -> Texture& {
+    if (this != &other) {
+        glDeleteTextures(1, &this->id);
+        this->id = std::exchange(other.id, 0);
+    }
+
+    return *this;
 }
 
 auto Texture::bind() const -> void {
@@ -43,4 +57,4 @@ auto Texture::unbind() -> void {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-} // namespace goon::mesh
+} // namespace goon::object::material::texture

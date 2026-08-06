@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace goon::mesh {
+namespace goon::object::mesh {
 
 struct Pos final {
     using Value = float;
@@ -25,4 +25,4 @@ struct Pos final {
         , z{values[2]} {}
 };
 
-} // namespace goon::mesh
+} // namespace goon::object::mesh

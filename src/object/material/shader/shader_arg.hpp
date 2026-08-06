@@ -1,10 +1,10 @@
 #pragma once
 
-#include "matrix.hpp"
+#include "matrix/matrix.hpp"
 #include "shader_var_type.hpp"
 #include <cassert>
 
-namespace goon::shader {
+namespace goon::object::material::shader {
 
 namespace detail {
 
@@ -33,8 +33,9 @@ template<typename T> struct ShaderDataTraits;
     };
 
 #define GOON_SHADER_MATRIX(TYPE, COLUMNS, ROWS, ENUM, FUNCTION)                \
-    template<> struct ShaderDataTraits<Matrix<TYPE, COLUMNS, ROWS>> final {    \
-        using Data = Matrix<TYPE, COLUMNS, ROWS>;                              \
+    template<>                                                                 \
+    struct ShaderDataTraits<matrix::Matrix<TYPE, COLUMNS, ROWS>> final {       \
+        using Data = matrix::Matrix<TYPE, COLUMNS, ROWS>;                      \
                                                                                \
         static constexpr auto SHADER_TYPE{ShaderVarType::Value::ENUM};         \
         static_assert(sizeof(Data) == sizeof(decltype(Data::values)));         \
@@ -117,7 +118,8 @@ class ShaderArg final {
     auto operator=(const ShaderArg&) -> ShaderArg& = delete;
     auto operator=(ShaderArg&&) -> ShaderArg& = default;
 
-    template<detail::ShaderData T> auto pass_data(const T& data) const -> void {
+    template<detail::ShaderData T>
+    auto set_uniform(const T& data) const -> void {
         assert(this->type.value == detail::ShaderDataTraits<T>::SHADER_TYPE);
         detail::ShaderDataTraits<T>::pass(this->location, data);
     }
@@ -140,4 +142,4 @@ class ShaderArg final {
     int32_t array_size;
 };
 
-} // namespace goon::shader
+} // namespace goon::object::material::shader

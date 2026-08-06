@@ -3,7 +3,7 @@
 #include <array>
 #include <print>
 
-namespace goon::shader {
+namespace goon::matrix {
 
 template<typename T, size_t Columns, size_t Rows>
     requires(
@@ -248,4 +248,4 @@ class Matrix final {
     }
 };
 
-} // namespace goon::shader
+} // namespace goon::matrix

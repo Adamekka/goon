@@ -1,7 +1,7 @@
 #include "vao.hpp"
 #include "gl.hpp"
 
-namespace goon::mesh {
+namespace goon::object::mesh {
 
 VAO::VAO(const VBO& vbo) {
     glGenVertexArrays(1, &this->id);
@@ -57,8 +57,22 @@ VAO::VAO(const VBO& vbo) {
     glEnableVertexAttribArray(2);
 }
 
+VAO::VAO(VAO&& other) noexcept
+    : id{std::exchange(other.id, 0)} {}
+
 VAO::~VAO() {
-    glDeleteVertexArrays(1, &this->id);
+    if (this->id != 0) {
+        glDeleteVertexArrays(1, &this->id);
+    }
+}
+
+auto VAO::operator=(VAO&& other) noexcept -> VAO& {
+    if (this != &other) {
+        glDeleteVertexArrays(1, &this->id);
+        this->id = std::exchange(other.id, 0);
+    }
+
+    return *this;
 }
 
 auto VAO::bind() const -> void {
@@ -69,4 +83,4 @@ auto VAO::unbind() -> void {
     glBindVertexArray(0);
 }
 
-} // namespace goon::mesh
+} // namespace goon::object::mesh

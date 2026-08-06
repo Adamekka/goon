@@ -2,7 +2,7 @@
 
 #include "gl.hpp"
 
-namespace goon::shader {
+namespace goon::object::material::shader {
 
 struct ShaderType final {
     enum class Value : uint16_t {
@@ -19,4 +19,4 @@ struct ShaderType final {
     }
 };
 
-} // namespace goon::shader
+} // namespace goon::object::material::shader

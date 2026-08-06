@@ -3,19 +3,19 @@
 #include "vertex.hpp"
 #include <span>
 
-namespace goon::mesh {
+namespace goon::object::mesh {
 
 class VBO final {
   public:
     explicit VBO(std::span<const Vertex> vertices);
 
     VBO(const VBO&) = delete;
-    VBO(VBO&&) = default;
+    VBO(VBO&&) noexcept;
 
     ~VBO();
 
     auto operator=(const VBO&) -> VBO& = delete;
-    auto operator=(VBO&&) -> VBO& = default;
+    auto operator=(VBO&&) noexcept -> VBO&;
 
     auto bind() const -> void;
     static auto unbind() -> void;
@@ -24,4 +24,4 @@ class VBO final {
     uint32_t id{0};
 };
 
-} // namespace goon::mesh
+} // namespace goon::object::mesh
