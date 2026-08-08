@@ -1,5 +1,6 @@
 #pragma once
 
+#include "camera/camera.hpp"
 #include "material/material.hpp"
 #include "mesh/mesh.hpp"
 
@@ -23,7 +24,7 @@ class Object final {
     auto operator=(const Object&) -> Object& = delete;
     auto operator=(Object&&) -> Object& = delete;
 
-    auto draw() const -> void;
+    auto draw(const camera::Camera& camera) const -> void;
 
   private:
     mesh::Mesh mesh;

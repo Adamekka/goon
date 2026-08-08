@@ -19,10 +19,18 @@ class Material final {
     auto operator=(const Material&) -> Material& = delete;
     auto operator=(Material&&) -> Material& = delete;
 
-    template<shader::detail::ShaderData T>
-    auto bind(const T& transform) const -> void {
+    template<
+        shader::detail::ShaderData T,
+        shader::detail::ShaderData U,
+        shader::detail::ShaderData V>
+    auto bind(const T& model, const U& view, const V& projection) const
+        -> void {
         this->shader_program.bind();
-        this->shader_program.get_args().at("transform").set_uniform(transform);
+        this->shader_program.get_args().at("model").set_uniform(model);
+        this->shader_program.get_args().at("view").set_uniform(view);
+        this->shader_program.get_args()
+            .at("projection")
+            .set_uniform(projection);
 
         this->texture.bind();
     }

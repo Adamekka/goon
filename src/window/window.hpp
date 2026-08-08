@@ -1,5 +1,6 @@
 #pragma once
 
+#include "camera/camera.hpp"
 #include "gl.hpp"
 #include <functional>
 
@@ -7,6 +8,9 @@ namespace goon::window {
 
 class Window final {
   public:
+    static constexpr auto WIDTH{size_t{800}};
+    static constexpr auto HEIGHT{size_t{600}};
+
     Window(const Window&) = delete;
     Window(Window&&) = delete;
 
@@ -15,6 +19,9 @@ class Window final {
 
     [[nodiscard]] static auto instance() -> Window&;
 
+    /// Set calling init()
+    auto set_camera(camera::Camera& camera) -> void;
+
     auto init() -> void;
 
     auto run(const std::function<void()>& callback) const -> void;
@@ -22,6 +29,8 @@ class Window final {
   private:
     // nullptr means not ready
     GLFWwindow* window{nullptr};
+
+    camera::Camera* camera{nullptr};
 
     Window() = default;
 

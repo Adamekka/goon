@@ -1,9 +1,27 @@
 #include "object/object.hpp"
 #include "window/window.hpp"
-#include <numbers>
 
 auto main() -> int {
-    // MARK: Init
+    // MARK: Create camera
+
+    auto camera{goon::camera::Camera{
+        []() -> goon::matrix::Matrix<float, 4, 4> {
+            auto transform{goon::matrix::Matrix<float, 4, 4>::identity()};
+            transform.translate(std::array{0.0f, 0.0f, -3.0f});
+            return transform;
+        }(),
+        std::numbers::pi_v<float> / 4.0f,
+        static_cast<float>(goon::window::Window::WIDTH)
+            / static_cast<float>(goon::window::Window::HEIGHT),
+        0.1f,
+        100.0f
+    }};
+
+    // MARK: Set camera
+
+    goon::window::Window::instance().set_camera(camera);
+
+    // MARK: Create window
 
     goon::window::Window::instance().init();
 
@@ -101,29 +119,31 @@ auto main() -> int {
 
     // MARK: Run
 
-    goon::window::Window::instance().run([&osaka, &yui]() -> void {
+    goon::window::Window::instance().run([&camera, &osaka, &yui]() -> void {
+        const auto time{static_cast<float>(glfwGetTime())};
+        constexpr auto ROTATION_SPEED{std::numbers::pi_v<float> / 2.0f};
+
         // MARK: Transformation matrix
 
         auto osaka_transform{goon::matrix::Matrix<float, 4, 4>::identity()};
         osaka_transform.translate(std::array{-0.5f, 0.0f, 0.0f});
-
-        const auto time{static_cast<float>(glfwGetTime())};
-        constexpr auto ROTATION_SPEED{std::numbers::pi_v<float> / 2.0f};
-        osaka_transform.rotate_z(time * ROTATION_SPEED);
-
+        osaka_transform.rotate(
+            time * ROTATION_SPEED, std::array{1.0f, 0.0f, 1.0f}
+        );
         osaka_transform.scale(std::array{1.0f, 2.0f, 1.0f});
-
         osaka.transform = osaka_transform;
 
         auto yui_transform{goon::matrix::Matrix<float, 4, 4>::identity()};
         yui_transform.translate(std::array{0.5f, 0.0f, 0.0f});
-        yui_transform.rotate_z(-time * ROTATION_SPEED);
+        yui_transform.rotate(
+            time * ROTATION_SPEED, std::array{0.0f, 1.0f, -1.0f}
+        );
         yui_transform.scale(std::array{1.0f, 1.0f, 1.0f});
         yui.transform = yui_transform;
 
         // MARK: Draw
 
-        osaka.draw();
-        yui.draw();
+        osaka.draw(camera);
+        yui.draw(camera);
     });
 }

@@ -16,6 +16,10 @@ auto Window::instance() -> Window& {
     return instance;
 }
 
+auto Window::set_camera(camera::Camera& camera) -> void {
+    this->camera = &camera;
+}
+
 auto Window::init() -> void {
     // MARK: OpenGL setup
 
@@ -26,23 +30,49 @@ auto Window::init() -> void {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    constexpr auto WIDTH{800};
-    constexpr auto HEIGHT{600};
-
-    this->window = glfwCreateWindow(WIDTH, HEIGHT, "goon", nullptr, nullptr);
+    this->window = glfwCreateWindow(
+        goon::window::Window::WIDTH,
+        goon::window::Window::HEIGHT,
+        "goon",
+        nullptr,
+        nullptr
+    );
 
     glfwMakeContextCurrent(this->window);
 
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     gladLoadGL(reinterpret_cast<GLADloadfunc>(glfwGetProcAddress));
 
+    glfwSetWindowUserPointer(this->window, this);
+
     constexpr auto FRAMEBUFFER_SIZE_CALLBACK{
         []([[maybe_unused]] GLFWwindow* const window,
            const int32_t width,
-           const int32_t height) -> void { glViewport(0, 0, width, height); }
+           const int32_t height) -> void {
+            glViewport(0, 0, width, height);
+
+            if (width == 0 || height == 0) {
+                // Minimized window
+                return;
+            }
+
+            const auto* const self{
+                static_cast<Window*>(glfwGetWindowUserPointer(window))
+            };
+
+            if (self->camera == nullptr) {
+                goon::core::panic("Camera not set in Window");
+            }
+
+            self->camera->update_projection(
+                static_cast<float>(width) / static_cast<float>(height)
+            );
+        }
     };
 
-    FRAMEBUFFER_SIZE_CALLBACK(nullptr, WIDTH, HEIGHT);
+    FRAMEBUFFER_SIZE_CALLBACK(
+        this->window, goon::window::Window::WIDTH, goon::window::Window::HEIGHT
+    );
 
     glfwSetFramebufferSizeCallback(this->window, FRAMEBUFFER_SIZE_CALLBACK);
 

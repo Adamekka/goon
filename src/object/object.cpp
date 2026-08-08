@@ -12,8 +12,8 @@ Object::Object(
     , mesh{std::move(mesh)}
     , material{material} {}
 
-auto Object::draw() const -> void {
-    this->material.bind(this->transform);
+auto Object::draw(const camera::Camera& camera) const -> void {
+    this->material.bind(this->transform, camera.transform, camera.projection);
     this->mesh.draw();
 }
 

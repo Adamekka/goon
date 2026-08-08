@@ -1,6 +1,7 @@
 #pragma once
 
-#include <array>
+#include <cassert>
+#include <numbers>
 #include <print>
 
 namespace goon::matrix {
@@ -55,6 +56,105 @@ class Matrix final {
             }
         }
         return Matrix{values};
+    }
+
+    [[nodiscard]] static constexpr auto
+    orthographic(const T left, const T right, const T bottom, const T top)
+        -> Matrix
+        requires(Columns == 4 && Rows == 4)
+    {
+        return orthographic(
+            left, right, bottom, top, static_cast<T>(-1), static_cast<T>(1)
+        );
+    }
+
+    [[nodiscard]] static constexpr auto orthographic(
+        const T left,
+        const T right,
+        const T bottom,
+        const T top,
+        const T z_near,
+        const T z_far
+    ) -> Matrix
+        requires(Columns == 4 && Rows == 4)
+    {
+        const auto width{right - left};
+        const auto height{top - bottom};
+        const auto depth{z_far - z_near};
+
+        assert(width != 0);
+        assert(height != 0);
+        assert(depth != 0);
+
+        // clang-format off
+        return Matrix{std::array<T, Columns * Rows>{
+            static_cast<T>(2) / width, 0,                          0,                          0,
+            0,                         static_cast<T>(2) / height, 0,                          0,
+            0,                         0,                          static_cast<T>(-2) / depth, 0,
+            -(right + left) / width,   -(top + bottom) / height,   -(z_far + z_near) / depth,  1
+        }};
+        // clang-format on
+    }
+
+    [[nodiscard]] static constexpr auto perspective(
+        const T fov_y_radians,
+        const T aspect_ratio,
+        const T z_near,
+        const T z_far
+    ) -> Matrix
+        requires(Columns == 4 && Rows == 4)
+    {
+        // Use perspective_relaxed for intentional nonstandard projections
+        assert(fov_y_radians > 0 && fov_y_radians < std::numbers::pi_v<T>);
+        assert(aspect_ratio > 0);
+        assert(z_near > 0);
+        assert(z_far > z_near);
+
+        return perspective_relaxed(fov_y_radians, aspect_ratio, z_near, z_far);
+    }
+
+    [[nodiscard]] static constexpr auto perspective_relaxed(
+        const T fov_y_radians,
+        const T aspect_ratio,
+        const T z_near,
+        const T z_far
+    ) -> Matrix
+        requires(Columns == 4 && Rows == 4)
+    {
+        assert(aspect_ratio != 0);
+        assert(z_near != 0);
+        assert(z_far != 0);
+
+        const auto tangent{std::tan(fov_y_radians / static_cast<T>(2))};
+        const auto depth{z_far - z_near};
+        const auto horizontal_denominator{aspect_ratio * tangent};
+
+        assert(std::isfinite(tangent) && tangent != 0);
+        assert(
+            std::isfinite(horizontal_denominator) && horizontal_denominator != 0
+        );
+        assert(std::isfinite(depth) && depth != 0);
+
+        const auto horizontal_scale{static_cast<T>(1) / horizontal_denominator};
+        const auto vertical_scale{static_cast<T>(1) / tangent};
+        const auto depth_scale{-(z_far + z_near) / depth};
+        const auto depth_translation{
+            -(static_cast<T>(2) * z_far * z_near) / depth
+        };
+
+        assert(std::isfinite(horizontal_scale) && horizontal_scale != 0);
+        assert(std::isfinite(vertical_scale) && vertical_scale != 0);
+        assert(std::isfinite(depth_scale));
+        assert(std::isfinite(depth_translation) && depth_translation != 0);
+
+        // clang-format off
+        return Matrix{std::array<T, Columns * Rows>{
+            horizontal_scale, 0,              0,                 0,
+            0,                vertical_scale, 0,                 0,
+            0,                0,              depth_scale,       -1,
+            0,                0,              depth_translation, 0
+        }};
+        // clang-format on
     }
 
     // MARK: Getters
@@ -168,6 +268,38 @@ class Matrix final {
             const auto y{this->values[Rows + row]};
             this->values[row] = (x * cosine) + (y * sine);
             this->values[Rows + row] = (y * cosine) - (x * sine);
+        }
+    }
+
+    constexpr auto rotate(const T radians, const std::array<T, 3>& axis) -> void
+        requires(Columns == 4 && Rows == 4)
+    {
+        const auto axis_length{std::hypot(axis[0], axis[1], axis[2])};
+        assert(std::isfinite(axis_length) && axis_length > 0);
+
+        const auto x{axis[0] / axis_length};
+        const auto y{axis[1] / axis_length};
+        const auto z{axis[2] / axis_length};
+        const auto cosine{std::cos(radians)};
+        const auto sine{std::sin(radians)};
+        const auto one_minus_cosine{static_cast<T>(1) - cosine};
+
+        for (size_t row{0}; row < Rows; ++row) {
+            const auto old_x{this->values[row]};
+            const auto old_y{this->values[Rows + row]};
+            const auto old_z{this->values[(2 * Rows) + row]};
+            this->values[row]
+                = (old_x * (cosine + (one_minus_cosine * x * x)))
+                + (old_y * ((one_minus_cosine * x * y) + (sine * z)))
+                + (old_z * ((one_minus_cosine * x * z) - (sine * y)));
+            this->values[Rows + row]
+                = (old_x * ((one_minus_cosine * x * y) - (sine * z)))
+                + (old_y * (cosine + (one_minus_cosine * y * y)))
+                + (old_z * ((one_minus_cosine * y * z) + (sine * x)));
+            this->values[(2 * Rows) + row]
+                = (old_x * ((one_minus_cosine * x * z) + (sine * y)))
+                + (old_y * ((one_minus_cosine * y * z) - (sine * x)))
+                + (old_z * (cosine + (one_minus_cosine * z * z)));
         }
     }
 
