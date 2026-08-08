@@ -31,6 +31,7 @@ Checks: >
   -cppcoreguidelines-non-private-member-variables-in-classes,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -fuchsia-default-arguments-calls,
+  -fuchsia-default-arguments-declarations,
   -fuchsia-trailing-return,
   -google-readability-todo,
   -llvmlibc-callee-namespace,

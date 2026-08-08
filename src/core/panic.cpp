@@ -1,18 +1,16 @@
 #include "panic.hpp"
 #include <print>
-#include <source_location>
 
 namespace goon::core {
 
-auto panic(const std::string_view message) -> void {
-    constexpr auto LOCATION{std::source_location::current()};
-
+auto panic(const std::string_view message, const std::source_location location)
+    -> void {
     std::println(
-        "PANIC: {{}}\n  at {{}}:{{}} in {{}}",
+        "PANIC: {}\n  at {}:{} in {}",
         message,
-        LOCATION.file_name(),
-        LOCATION.line(),
-        LOCATION.function_name()
+        location.file_name(),
+        location.line(),
+        location.function_name()
     );
 
     std::abort();
