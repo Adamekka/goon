@@ -8,12 +8,12 @@ namespace goon::object {
 
 class Object final {
   public:
-    matrix::Matrix<float, 4, 4> transform;
+    transform::Transform transform;
 
     Object(
         mesh::Mesh mesh,
         const material::Material& material,
-        matrix::Matrix<float, 4, 4> transform
+        transform::Transform transform
     );
 
     Object(const Object&) = delete;

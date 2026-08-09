@@ -29,6 +29,7 @@ auto Window::init() -> void {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    glfwWindowHint(GLFW_DEPTH_BITS, 24);
 
     this->window = glfwCreateWindow(
         goon::window::Window::WIDTH,
@@ -76,6 +77,9 @@ auto Window::init() -> void {
 
     glfwSetFramebufferSizeCallback(this->window, FRAMEBUFFER_SIZE_CALLBACK);
 
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
     // MARK: stb setup
 
     stbi_set_flip_vertically_on_load(1);
@@ -87,7 +91,7 @@ auto Window::run(const std::function<void()>& callback) const -> void {
     }
 
     while (glfwWindowShouldClose(this->window) == 0) {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         callback();
 

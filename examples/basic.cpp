@@ -8,9 +8,11 @@ auto main() -> int {
     constexpr auto CAMERA_RADIUS{3.0f};
 
     auto camera{goon::camera::Camera{
-        goon::matrix::Matrix<float, 4, 4>::look_at(
-            {0.0f, 0.0f, CAMERA_RADIUS}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}
-        ),
+        goon::transform::Transform{
+            {0.0f, 0.0f, CAMERA_RADIUS},
+            goon::transform::Quaternion::identity(),
+            {1.0f, 1.0f, 1.0f}
+        },
         std::numbers::pi_v<float> / 4.0f,
         static_cast<float>(goon::window::Window::WIDTH)
             / static_cast<float>(goon::window::Window::HEIGHT),
@@ -88,7 +90,11 @@ auto main() -> int {
             }
         }},
         osaka_material,
-        goon::matrix::Matrix<float, 4, 4>::identity()
+        goon::transform::Transform{
+            {-0.5f, 0.0f, 0.0f},
+            goon::transform::Quaternion::identity(),
+            {1.0f, 2.0f, 1.0f}
+        }
     }};
 
     auto yui{goon::object::Object{
@@ -115,7 +121,11 @@ auto main() -> int {
             }
         }},
         yui_material,
-        goon::matrix::Matrix<float, 4, 4>::identity()
+        goon::transform::Transform{
+            {0.5f, 0.0f, 0.0f},
+            goon::transform::Quaternion::identity(),
+            {1.0f, 1.0f, 1.0f}
+        }
     }};
 
     // MARK: Run
@@ -141,27 +151,28 @@ auto main() -> int {
                           : 0.0f;
         camera_pitch = std::clamp(camera_pitch, -1.5f, 1.5f);
 
+        // MARK: Update camera
+
         const auto horizontal_radius{CAMERA_RADIUS * std::cos(camera_pitch)};
         const auto camera_position{std::array{
             horizontal_radius * std::sin(camera_yaw),
             CAMERA_RADIUS * std::sin(camera_pitch),
             horizontal_radius * std::cos(camera_yaw)
         }};
-        camera.transform = goon::matrix::Matrix<float, 4, 4>::look_at(
-            camera_position, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}
+        camera.transform.position = camera_position;
+        camera.look_at({0.0f, 0.0f, 0.0f});
+
+        // MARK: Update objects
+
+        const auto time{static_cast<float>(glfwGetTime())};
+
+        osaka.transform.rotation = goon::transform::Quaternion::from_axis_angle(
+            time, {0.0f, 1.0f, 0.0f}
         );
 
-        // MARK: Transformation matrix
-
-        auto osaka_transform{goon::matrix::Matrix<float, 4, 4>::identity()};
-        osaka_transform.translate(std::array{-0.5f, 0.0f, 0.0f});
-        osaka_transform.scale(std::array{1.0f, 2.0f, 1.0f});
-        osaka.transform = osaka_transform;
-
-        auto yui_transform{goon::matrix::Matrix<float, 4, 4>::identity()};
-        yui_transform.translate(std::array{0.5f, 0.0f, 0.0f});
-        yui_transform.scale(std::array{1.0f, 1.0f, 1.0f});
-        yui.transform = yui_transform;
+        yui.transform.rotation = goon::transform::Quaternion::from_axis_angle(
+            time, {1.0f, 0.0f, 0.0f}
+        );
 
         // MARK: Draw
 
