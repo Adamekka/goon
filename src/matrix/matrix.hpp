@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cassert>
+#include "vector/vector.hpp"
 #include <numbers>
 #include <print>
 
@@ -56,6 +56,37 @@ class Matrix final {
             }
         }
         return Matrix{values};
+    }
+
+    [[nodiscard]] static constexpr auto look_at(
+        const std::array<T, 3>& eye,
+        const std::array<T, 3>& center,
+        const std::array<T, 3>& up
+    ) -> Matrix
+        requires(Columns == 4 && Rows == 4)
+    {
+        const auto forward{goon::vector::normalize(
+            std::array<T, 3>{
+                center[0] - eye[0], center[1] - eye[1], center[2] - eye[2]
+            }
+        )};
+        const auto side{
+            goon::vector::normalize(goon::vector::cross(forward, up))
+        };
+        const auto corrected_up{goon::vector::cross(side, forward)};
+
+        const auto translation_x{-goon::vector::dot(side, eye)};
+        const auto translation_y{-goon::vector::dot(corrected_up, eye)};
+        const auto translation_z{goon::vector::dot(forward, eye)};
+
+        // clang-format off
+        return Matrix{std::array<T, Columns * Rows>{
+            side[0],       corrected_up[0], -forward[0],   0,
+            side[1],       corrected_up[1], -forward[1],   0,
+            side[2],       corrected_up[2], -forward[2],   0,
+            translation_x, translation_y,   translation_z, 1
+        }};
+        // clang-format on
     }
 
     [[nodiscard]] static constexpr auto
