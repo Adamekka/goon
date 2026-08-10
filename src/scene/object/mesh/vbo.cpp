@@ -1,7 +1,7 @@
 #include "vbo.hpp"
 #include "gl.hpp"
 
-namespace goon::object::mesh {
+namespace goon::scene::object::mesh {
 
 VBO::VBO(const std::span<const Vertex> vertices) {
     glGenBuffers(1, &this->id);
@@ -40,4 +40,4 @@ auto VBO::unbind() -> void {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

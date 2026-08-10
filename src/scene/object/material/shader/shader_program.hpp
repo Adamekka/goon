@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace goon::object::material::shader {
+namespace goon::scene::object::material::shader {
 
 class ShaderProgram final {
   public:
@@ -38,4 +38,4 @@ class ShaderProgram final {
     std::unordered_map<std::string, ShaderArg> args;
 };
 
-} // namespace goon::object::material::shader
+} // namespace goon::scene::object::material::shader

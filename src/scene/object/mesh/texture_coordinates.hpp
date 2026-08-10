@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace goon::object::mesh {
+namespace goon::scene::object::mesh {
 
 struct TextureCoordinates final {
     using Value = float;
@@ -22,4 +22,4 @@ struct TextureCoordinates final {
         , v{values[1]} {}
 };
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

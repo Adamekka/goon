@@ -2,7 +2,7 @@
 #include <fstream>
 #include <print>
 
-namespace goon::object::material::shader {
+namespace goon::scene::object::material::shader {
 
 ShaderProgram::~ShaderProgram() {
     if (this->id != 0) {
@@ -143,4 +143,4 @@ auto ShaderProgram::get_args() -> std::unordered_map<std::string, ShaderArg>& {
     return this->args;
 }
 
-} // namespace goon::object::material::shader
+} // namespace goon::scene::object::material::shader

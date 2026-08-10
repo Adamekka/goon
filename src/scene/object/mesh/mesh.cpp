@@ -1,10 +1,7 @@
 #include "mesh.hpp"
 #include "gl.hpp"
 
-namespace goon::object::mesh {
-
-Mesh::Mesh(const std::span<const Vertex> vertices)
-    : vertices{vertices.begin(), vertices.end()} {}
+namespace goon::scene::object::mesh {
 
 auto Mesh::draw() const -> void {
     this->vao.bind();
@@ -14,4 +11,4 @@ auto Mesh::draw() const -> void {
     );
 }
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

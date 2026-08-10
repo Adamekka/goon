@@ -2,7 +2,7 @@
 
 #include <array>
 
-namespace goon::object::mesh {
+namespace goon::scene::object::mesh {
 
 struct Color final {
     using Value = float;
@@ -28,4 +28,4 @@ struct Color final {
         , a{values[3]} {}
 };
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

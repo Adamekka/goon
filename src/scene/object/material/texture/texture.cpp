@@ -3,7 +3,7 @@
 #include "gl.hpp"
 #include "stb/stb_image.h"
 
-namespace goon::object::material::texture {
+namespace goon::scene::object::material::texture {
 
 Texture::Texture(const std::filesystem::path& path) {
     glGenTextures(1, &this->id);
@@ -57,4 +57,4 @@ auto Texture::unbind() -> void {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-} // namespace goon::object::material::texture
+} // namespace goon::scene::object::material::texture

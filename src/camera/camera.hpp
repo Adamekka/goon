@@ -15,29 +15,29 @@ class Camera final {
     transform::Transform transform;
     matrix::Matrix<float, 4, 4> projection;
 
-    constexpr Camera(
-        transform::Transform transform,
-        const float fov_radians,
-        const float aspect_ratio,
-        const float z_near,
-        const float z_far
+    constexpr explicit Camera(
+        const transform::Transform transform = transform::Transform{},
+        const float fov_radians = std::numbers::pi_v<float> / 4.0f,
+        const float aspect_ratio = 4.0f / 3.0f,
+        const float z_near = 0.1f,
+        const float z_far = 100.0f
     )
         : fov_radians{fov_radians}
         , aspect_ratio{aspect_ratio}
         , z_near{z_near}
-        , z_far{z_far} // NOLINTNEXTLINE(performance-move-const-arg)
-        , transform{std::move(transform)}
+        , z_far{z_far}
+        , transform{transform}
         , projection{matrix::Matrix<float, 4, 4>::perspective(
               fov_radians, aspect_ratio, z_near, z_far
           )} {}
 
     Camera(const Camera&) = delete;
-    Camera(Camera&&) = delete;
+    Camera(Camera&&) = default;
 
     ~Camera() = default;
 
     auto operator=(const Camera&) -> Camera& = delete;
-    auto operator=(Camera&&) -> Camera& = delete;
+    auto operator=(Camera&&) -> Camera& = default;
 
     constexpr auto look_at(transform::Transform::Vector target) -> void {
         this->look_at(this->transform.position, target, {0.0f, 1.0f, 0.0f});

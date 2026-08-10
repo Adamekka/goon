@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-namespace goon::object::material::texture {
+namespace goon::scene::object::material::texture {
 
 class Texture final {
   public:
@@ -23,4 +23,4 @@ class Texture final {
     uint32_t id{0};
 };
 
-} // namespace goon::object::material::texture
+} // namespace goon::scene::object::material::texture

@@ -3,11 +3,12 @@
 #include "vao.hpp"
 #include <vector>
 
-namespace goon::object::mesh {
+namespace goon::scene::object::mesh {
 
 class Mesh final {
   public:
-    explicit Mesh(std::span<const Vertex> vertices);
+    constexpr explicit Mesh(std::span<const Vertex> vertices)
+        : vertices{vertices.begin(), vertices.end()} {}
 
     Mesh(const Mesh&) = delete;
     Mesh(Mesh&&) = default;
@@ -25,4 +26,4 @@ class Mesh final {
     VAO vao{this->vbo};
 };
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

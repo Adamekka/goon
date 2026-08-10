@@ -5,8 +5,7 @@
 
 namespace goon::transform {
 
-class Transform final {
-  public:
+struct Transform final {
     using Vector = std::array<float, 3>;
 
     Vector position{0.0f, 0.0f, 0.0f};

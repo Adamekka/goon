@@ -4,7 +4,7 @@
 #include "pos.hpp"
 #include "texture_coordinates.hpp"
 
-namespace goon::object::mesh {
+namespace goon::scene::object::mesh {
 
 struct Vertex final {
     Pos position;
@@ -23,4 +23,4 @@ struct Vertex final {
         , texture_coordinates{texture_coordinates} {}
 };
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

@@ -4,7 +4,7 @@
 #include "shader_var_type.hpp"
 #include <cassert>
 
-namespace goon::object::material::shader {
+namespace goon::scene::object::material::shader {
 
 namespace detail {
 
@@ -110,12 +110,12 @@ class ShaderArg final {
         , location{location}
         , array_size{array_size} {}
 
-    ShaderArg(const ShaderArg&) = delete;
+    ShaderArg(const ShaderArg&) = default;
     ShaderArg(ShaderArg&&) = default;
 
     ~ShaderArg() = default;
 
-    auto operator=(const ShaderArg&) -> ShaderArg& = delete;
+    auto operator=(const ShaderArg&) -> ShaderArg& = default;
     auto operator=(ShaderArg&&) -> ShaderArg& = default;
 
     template<detail::ShaderData T>
@@ -142,4 +142,4 @@ class ShaderArg final {
     int32_t array_size;
 };
 
-} // namespace goon::object::material::shader
+} // namespace goon::scene::object::material::shader

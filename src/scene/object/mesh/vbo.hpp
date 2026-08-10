@@ -3,7 +3,7 @@
 #include "vertex.hpp"
 #include <span>
 
-namespace goon::object::mesh {
+namespace goon::scene::object::mesh {
 
 class VBO final {
   public:
@@ -24,4 +24,4 @@ class VBO final {
     uint32_t id{0};
 };
 
-} // namespace goon::object::mesh
+} // namespace goon::scene::object::mesh

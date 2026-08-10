@@ -4,7 +4,7 @@
 #include "material/material.hpp"
 #include "mesh/mesh.hpp"
 
-namespace goon::object {
+namespace goon::scene::object {
 
 class Object final {
   public:
@@ -17,18 +17,19 @@ class Object final {
     );
 
     Object(const Object&) = delete;
-    Object(Object&&) = delete;
+    Object(Object&&) = default;
 
     ~Object() = default;
 
     auto operator=(const Object&) -> Object& = delete;
-    auto operator=(Object&&) -> Object& = delete;
+    auto operator=(Object&&) -> Object& = default;
 
-    auto draw(const camera::Camera& camera) const -> void;
+    auto draw(const camera::Camera& camera, const light::Light& light) const
+        -> void;
 
   private:
     mesh::Mesh mesh;
-    const material::Material& material;
+    const material::Material* material;
 };
 
-} // namespace goon::object
+} // namespace goon::scene::object

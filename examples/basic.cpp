@@ -1,13 +1,17 @@
 #include "input/input_manager.hpp"
-#include "object/object.hpp"
+#include "scene/scene.hpp"
 #include "window/window.hpp"
 
 auto main() -> int {
+    // MARK: Create scene
+
+    auto scene{goon::scene::Scene{}};
+
     // MARK: Create camera
 
     constexpr auto CAMERA_RADIUS{3.0f};
 
-    auto camera{goon::camera::Camera{
+    auto& camera{scene.create_camera(
         goon::transform::Transform{
             {0.0f, 0.0f, CAMERA_RADIUS},
             goon::transform::Quaternion::identity(),
@@ -15,10 +19,8 @@ auto main() -> int {
         },
         std::numbers::pi_v<float> / 4.0f,
         static_cast<float>(goon::window::Window::WIDTH)
-            / static_cast<float>(goon::window::Window::HEIGHT),
-        0.1f,
-        100.0f
-    }};
+            / static_cast<float>(goon::window::Window::HEIGHT)
+    )};
 
     // MARK: Set camera
 
@@ -28,65 +30,65 @@ auto main() -> int {
 
     goon::window::Window::instance().init();
 
-    // MARK: Create shader programs
+    // MARK: Create shader program
 
-    auto shader_program{goon::object::material::shader::ShaderProgram{}};
+    auto shader_program{goon::scene::object::material::shader::ShaderProgram{}};
 
     // MARK: Compile shaders
 
     shader_program.compile(
         "examples/assets/shaders/basic.vert",
-        goon::object::material::shader::ShaderType{
-            goon::object::material::shader::ShaderType::Value::Vertex
+        goon::scene::object::material::shader::ShaderType{
+            goon::scene::object::material::shader::ShaderType::Value::Vertex
         }
     );
     shader_program.compile(
         "examples/assets/shaders/basic.frag",
-        goon::object::material::shader::ShaderType{
-            goon::object::material::shader::ShaderType::Value::Fragment
+        goon::scene::object::material::shader::ShaderType{
+            goon::scene::object::material::shader::ShaderType::Value::Fragment
         }
     );
 
-    auto& _{shader_program.link()};
+    const auto& _{shader_program.link()};
 
     // MARK: Create textures
 
-    const auto osaka_texture{goon::object::material::texture::Texture{
+    const auto osaka_texture{goon::scene::object::material::texture::Texture{
         "examples/assets/textures/osaka.jpg"
     }};
 
-    const auto yui_texture{goon::object::material::texture::Texture{
+    const auto yui_texture{goon::scene::object::material::texture::Texture{
         "examples/assets/textures/yui.jpg"
     }};
 
     // MARK: Create materials
 
     const auto osaka_material{
-        goon::object::material::Material{shader_program, osaka_texture}
+        goon::scene::object::material::Material{shader_program, osaka_texture}
     };
 
     const auto yui_material{
-        goon::object::material::Material{shader_program, yui_texture}
+        goon::scene::object::material::Material{shader_program, yui_texture}
     };
 
     // MARK: Create objects
 
-    auto osaka{goon::object::Object{
-        goon::object::mesh::Mesh{std::array{
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
-                goon::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{0.0f, 0.0f}
+    auto* const osaka{scene.create_object(
+        goon::scene::object::mesh::Mesh{std::array{
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f}
             },
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{0.4f, -0.4f, 0.0f},
-                goon::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{1.0f, 0.0f}
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f}
             },
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{0.0f, 0.4f, 0.0f},
-                goon::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{0.5f, 1.0f}
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{0.0f, 0.4f, 0.0f},
+                goon::scene::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{0.5f, 1.0f}
             }
         }},
         osaka_material,
@@ -95,29 +97,29 @@ auto main() -> int {
             goon::transform::Quaternion::identity(),
             {1.0f, 2.0f, 1.0f}
         }
-    }};
+    )};
 
-    auto yui{goon::object::Object{
-        goon::object::mesh::Mesh{std::array{
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
-                goon::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{0.0f, 0.0f}
+    auto* const yui{scene.create_object(
+        goon::scene::object::mesh::Mesh{std::array{
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f}
             },
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{0.4f, -0.4f, 0.0f},
-                goon::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{1.0f, 0.0f}
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f}
             },
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{-0.4f, 0.4f, 0.0f},
-                goon::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{0.0f, 1.0f}
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{-0.4f, 0.4f, 0.0f},
+                goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{0.0f, 1.0f}
             },
-            goon::object::mesh::Vertex{
-                goon::object::mesh::Pos{0.4f, 0.4f, 0.0f},
-                goon::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                goon::object::mesh::TextureCoordinates{1.0f, 1.0f}
+            goon::scene::object::mesh::Vertex{
+                goon::scene::object::mesh::Pos{0.4f, 0.4f, 0.0f},
+                goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
+                goon::scene::object::mesh::TextureCoordinates{1.0f, 1.0f}
             }
         }},
         yui_material,
@@ -126,7 +128,13 @@ auto main() -> int {
             goon::transform::Quaternion::identity(),
             {1.0f, 1.0f, 1.0f}
         }
-    }};
+    )};
+
+    // MARK: Create light
+
+    auto& _{scene.create_light(
+        goon::scene::light::AmbientLight{{1.0f, 1.0f, 1.0f}, 0.5f}
+    )};
 
     // MARK: Run
 
@@ -166,17 +174,17 @@ auto main() -> int {
 
         const auto time{static_cast<float>(glfwGetTime())};
 
-        osaka.transform.rotation = goon::transform::Quaternion::from_axis_angle(
-            time, {0.0f, 1.0f, 0.0f}
-        );
+        osaka->transform.rotation
+            = goon::transform::Quaternion::from_axis_angle(
+                time, {0.0f, 1.0f, 0.0f}
+            );
 
-        yui.transform.rotation = goon::transform::Quaternion::from_axis_angle(
+        yui->transform.rotation = goon::transform::Quaternion::from_axis_angle(
             time, {1.0f, 0.0f, 0.0f}
         );
 
         // MARK: Draw
 
-        osaka.draw(camera);
-        yui.draw(camera);
+        scene.update();
     });
 }
