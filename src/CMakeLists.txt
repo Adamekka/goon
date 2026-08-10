@@ -36,6 +36,11 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
 find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
+# plf_hive
+add_library(plf_hive INTERFACE)
+target_include_directories(plf_hive INTERFACE ${PROJECT_SOURCE_DIR}/deps/plf_hive/include)
+target_link_libraries(${PROJECT_NAME} PUBLIC plf_hive)
+
 # stb
 add_library(stb STATIC ${PROJECT_SOURCE_DIR}/deps/stb/src/stb_image.c)
 target_include_directories(stb PUBLIC ${PROJECT_SOURCE_DIR}/deps/stb/include)

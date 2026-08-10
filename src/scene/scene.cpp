@@ -13,8 +13,7 @@ auto Scene::create_object(
     const object::material::Material& material,
     const transform::Transform transform
 ) -> object::Object* {
-    this->objects.emplace_back(std::move(mesh), material, transform);
-    return &this->objects.back();
+    return &*this->objects.emplace(std::move(mesh), material, transform);
 }
 
 } // namespace goon::scene

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "object/object.hpp"
-#include <deque>
+#include <plf_hive/plf_hive.h>
 
 namespace goon::scene {
 
@@ -9,7 +9,7 @@ class Scene final {
   public:
     light::Light light;
     camera::Camera camera;
-    std::deque<object::Object> objects;
+    plf::hive<object::Object> objects;
 
     Scene() = default;
 
