@@ -19,7 +19,7 @@ class Window final {
 
     [[nodiscard]] static auto instance() -> Window&;
 
-    /// Set calling init()
+    /// Set before calling init()
     auto set_camera(camera::Camera& camera) -> void;
 
     auto init() -> void;
