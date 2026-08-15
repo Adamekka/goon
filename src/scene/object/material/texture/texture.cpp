@@ -1,7 +1,7 @@
 #include "texture.hpp"
 #include "core/defer.hpp"
 #include "gl.hpp"
-#include "stb/stb_image.h"
+#include <stb/stb_image.h>
 
 namespace goon::scene::object::material::texture {
 

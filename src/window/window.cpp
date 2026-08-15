@@ -1,6 +1,6 @@
 #include "window.hpp"
 #include "core/panic.hpp"
-#include "stb/stb_image.h"
+#include <stb/stb_image.h>
 
 namespace goon::window {
 
