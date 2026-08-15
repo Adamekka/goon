@@ -22,6 +22,7 @@ class Material final {
 
     auto bind(
         const shader::detail::ShaderData auto& model,
+        const shader::detail::ShaderData auto& normal_matrix,
         const shader::detail::ShaderData auto& view,
         const shader::detail::ShaderData auto& projection,
         const light::Light& light
@@ -31,18 +32,36 @@ class Material final {
         const auto& shader_args{this->shader_program->get_args()};
 
         shader_args.at("model").set_uniform(model);
+        shader_args.at("normal_matrix").set_uniform(normal_matrix);
         shader_args.at("view").set_uniform(view);
         shader_args.at("projection").set_uniform(projection);
 
         if (light.ambient_light.has_value()) {
-            shader_args.at("ambient_light_color")
+            shader_args.at("ambient_color")
                 .set_uniform(light.ambient_light->color);
-            shader_args.at("ambient_strength")
+            shader_args.at("ambient_intensity")
                 .set_uniform(light.ambient_light->intensity);
         } else {
-            shader_args.at("ambient_light_color")
+            shader_args.at("ambient_color")
                 .set_uniform(std::array{1.0f, 1.0f, 1.0f});
-            shader_args.at("ambient_strength").set_uniform(1.0f);
+            shader_args.at("ambient_intensity").set_uniform(0.0f);
+        }
+
+        if (light.diffuse_light.has_value()) {
+            shader_args.at("diffuse_color")
+                .set_uniform(light.diffuse_light->color);
+            shader_args.at("diffuse_intensity")
+                .set_uniform(light.diffuse_light->intensity);
+            shader_args.at("diffuse_direction")
+                .set_uniform(light.diffuse_light->direction);
+        } else {
+            shader_args.at("diffuse_color")
+                .set_uniform(std::array{0.0f, 0.0f, 0.0f});
+            shader_args.at("diffuse_intensity").set_uniform(0.0f);
+            // The intensity disables this light, but the shader still
+            // normalizes its direction, so keep that operation defined.
+            shader_args.at("diffuse_direction")
+                .set_uniform(std::array{0.0f, 0.0f, 1.0f});
         }
 
         this->texture->bind();

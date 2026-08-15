@@ -1,17 +1,21 @@
 #pragma once
 
 #include "ambient_light.hpp"
+#include "diffuse_light.hpp"
 #include <optional>
 
 namespace goon::scene::light {
 
 struct Light final {
     std::optional<AmbientLight> ambient_light;
+    std::optional<DiffuseLight> diffuse_light;
 
     constexpr explicit Light(
-        const std::optional<AmbientLight> ambient_light = std::nullopt
+        const std::optional<AmbientLight> ambient_light = std::nullopt,
+        const std::optional<DiffuseLight> diffuse_light = std::nullopt
     )
-        : ambient_light{ambient_light} {}
+        : ambient_light{ambient_light}
+        , diffuse_light{diffuse_light} {}
 };
 
 } // namespace goon::scene::light

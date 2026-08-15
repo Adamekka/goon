@@ -8,7 +8,9 @@ struct AmbientLight final {
     std::array<float, 3> color;
     float intensity;
 
-    constexpr explicit AmbientLight(std::array<float, 3> color, float intensity)
+    constexpr explicit AmbientLight(
+        const std::array<float, 3> color, const float intensity
+    )
         : color{color}
         , intensity{intensity} {}
 };

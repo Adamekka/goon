@@ -1,5 +1,21 @@
 #include "vao.hpp"
 #include "gl.hpp"
+#include <boost/hana.hpp>
+
+namespace {
+
+template<typename Object, typename Field>
+[[nodiscard]] auto offset_of(const Object& object, const Field& field) noexcept
+    -> size_t {
+    return static_cast<size_t>(
+        // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
+        reinterpret_cast<uintptr_t>(std::addressof(field))
+        - reinterpret_cast<uintptr_t>(std::addressof(object))
+        // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+    );
+}
+
+} // namespace
 
 namespace goon::scene::object::mesh {
 
@@ -9,52 +25,37 @@ VAO::VAO(const VBO& vbo) {
     this->bind();
     vbo.bind();
 
-    // MARK: Position
+    constexpr auto VERTEX{Vertex{}};
+    auto index{uint32_t{0}};
 
-    // I'd like to compare with GL_FLOAT instead
-    static_assert(std::same_as<Pos::Value, float>);
-    glVertexAttribPointer(
-        0, Pos::DIMENSION, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr
+    boost::hana::for_each(
+        boost::hana::accessors<Vertex>(),
+        [&VERTEX, &index](auto accessor) -> void {
+            const auto& field{boost::hana::second(accessor)(VERTEX)};
+
+            using Attribute = std::remove_cvref_t<decltype(field)>;
+
+            // I'd like to compare with GL_FLOAT instead
+            static_assert(std::same_as<typename Attribute::Value, float>);
+
+            glVertexAttribPointer(
+                index,
+                Attribute::DIMENSION,
+                GL_FLOAT,
+                GL_FALSE,
+                sizeof(Vertex),
+                // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
+                // NOLINTBEGIN(performance-no-int-to-ptr)
+                reinterpret_cast<const void*>(offset_of(VERTEX, field))
+                // NOLINTEND(performance-no-int-to-ptr)
+                // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+            );
+
+            glEnableVertexAttribArray(index);
+
+            ++index;
+        }
     );
-    glEnableVertexAttribArray(0);
-
-    // MARK: Color
-
-    // I'd like to compare with GL_FLOAT instead
-    static_assert(std::same_as<Color::Value, float>);
-    glVertexAttribPointer(
-        1,
-        Color::DIMENSION,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(Vertex),
-        // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
-        // NOLINTBEGIN(performance-no-int-to-ptr)
-        reinterpret_cast<const void* const>(offsetof(Vertex, color))
-        // NOLINTEND(performance-no-int-to-ptr)
-        // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
-    );
-    glEnableVertexAttribArray(1);
-
-    // MARK: Texture Coordinates
-
-    // I'd like to compare with GL_FLOAT instead
-    static_assert(std::same_as<TextureCoordinates::Value, float>);
-    glVertexAttribPointer(
-        2,
-        TextureCoordinates::DIMENSION,
-        GL_FLOAT,
-        GL_FALSE,
-        sizeof(Vertex),
-        // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
-        // NOLINTBEGIN(performance-no-int-to-ptr)
-        reinterpret_cast<const void* const>(
-            offsetof(Vertex, texture_coordinates)
-        )
-        // NOLINTEND(performance-no-int-to-ptr)
-        // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
-    );
-    glEnableVertexAttribArray(2);
 }
 
 VAO::VAO(VAO&& other) noexcept

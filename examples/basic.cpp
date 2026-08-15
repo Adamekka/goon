@@ -76,19 +76,22 @@ auto main() -> int {
     auto* const osaka{scene.create_object(
         goon::scene::object::mesh::Mesh{std::array{
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
                 goon::scene::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f}
+                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             },
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
                 goon::scene::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f}
+                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             },
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{0.0f, 0.4f, 0.0f},
+                goon::scene::object::mesh::Position{0.0f, 0.4f, 0.0f},
                 goon::scene::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.5f, 1.0f}
+                goon::scene::object::mesh::TextureCoordinates{0.5f, 1.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             }
         }},
         osaka_material,
@@ -102,24 +105,28 @@ auto main() -> int {
     auto* const yui{scene.create_object(
         goon::scene::object::mesh::Mesh{std::array{
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{-0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
                 goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f}
+                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             },
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{0.4f, -0.4f, 0.0f},
+                goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
                 goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f}
+                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             },
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{-0.4f, 0.4f, 0.0f},
+                goon::scene::object::mesh::Position{-0.4f, 0.4f, 0.0f},
                 goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.0f, 1.0f}
+                goon::scene::object::mesh::TextureCoordinates{0.0f, 1.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             },
             goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Pos{0.4f, 0.4f, 0.0f},
+                goon::scene::object::mesh::Position{0.4f, 0.4f, 0.0f},
                 goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{1.0f, 1.0f}
+                goon::scene::object::mesh::TextureCoordinates{1.0f, 1.0f},
+                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
             }
         }},
         yui_material,
@@ -132,8 +139,11 @@ auto main() -> int {
 
     // MARK: Create light
 
-    auto& _{scene.create_light(
-        goon::scene::light::AmbientLight{{1.0f, 1.0f, 1.0f}, 0.5f}
+    const auto& _{scene.create_light(
+        goon::scene::light::AmbientLight{{1.0f, 1.0f, 1.0f}, 0.5f},
+        goon::scene::light::DiffuseLight{
+            {1.0f, 1.0f, 1.0f}, 1.0f, {1.0f, 1.0f, 1.0f}
+        }
     )};
 
     // MARK: Run

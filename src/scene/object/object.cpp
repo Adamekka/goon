@@ -15,6 +15,7 @@ auto Object::draw(const camera::Camera& camera, const light::Light& light) const
     -> void {
     this->material->bind(
         this->transform.get_matrix(),
+        this->transform.get_normal_matrix(),
         camera.get_view_matrix(),
         camera.projection,
         light

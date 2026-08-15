@@ -35,6 +35,7 @@ class ShaderProgram final {
     const uint32_t id{glCreateProgram()};
     std::vector<uint32_t> shaders;
 
+    // TODO: Check arg exists before access to prevent crashes
     std::unordered_map<std::string, ShaderArg> args;
 };
 

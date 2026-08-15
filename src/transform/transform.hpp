@@ -58,6 +58,36 @@ struct Transform final {
         }};
         // clang-format on
     }
+
+    [[nodiscard]] constexpr auto get_normal_matrix() const
+        -> matrix::Matrix<float, 3, 3> {
+        assert(this->scale[0] != 0.0f);
+        assert(this->scale[1] != 0.0f);
+        assert(this->scale[2] != 0.0f);
+
+        const auto w{this->rotation.get_w()};
+        const auto x{this->rotation.get_x()};
+        const auto y{this->rotation.get_y()};
+        const auto z{this->rotation.get_z()};
+
+        const auto xx{2.0f * x * x};
+        const auto xy{2.0f * x * y};
+        const auto xz{2.0f * x * z};
+        const auto xw{2.0f * x * w};
+        const auto yy{2.0f * y * y};
+        const auto yz{2.0f * y * z};
+        const auto yw{2.0f * y * w};
+        const auto zz{2.0f * z * z};
+        const auto zw{2.0f * z * w};
+
+        // clang-format off
+        return matrix::Matrix<float, 3, 3>{std::array{
+            (1.0f - yy - zz) / this->scale[0], (xy + zw) / this->scale[0],        (xz - yw) / this->scale[0],
+            (xy - zw) / this->scale[1],        (1.0f - xx - zz) / this->scale[1], (yz + xw) / this->scale[1],
+            (xz + yw) / this->scale[2],        (yz - xw) / this->scale[2],        (1.0f - xx - yy) / this->scale[2]
+        }};
+        // clang-format on
+    }
 };
 
 } // namespace goon::transform
