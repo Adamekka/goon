@@ -40,7 +40,7 @@ class Camera final {
     auto operator=(Camera&&) -> Camera& = default;
 
     constexpr auto look_at(transform::Transform::Vector target) -> void {
-        this->look_at(this->transform.position, target, {0.0f, 1.0f, 0.0f});
+        this->look_at(this->transform.position, target);
     }
 
     constexpr auto look_at(
