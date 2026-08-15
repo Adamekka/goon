@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/concepts/floating_scalar.hpp"
 #include "vector/vector.hpp"
 #include <numbers>
 #include <print>
@@ -9,7 +10,7 @@ namespace goon::matrix {
 template<typename T, size_t Columns, size_t Rows>
     requires(
         Columns >= 2 && Columns <= 4 && Rows >= 2 && Rows <= 4
-        && (std::same_as<T, float> || std::same_as<T, double>)
+        && core::concepts::FloatingScalar<T>
     )
 class Matrix final {
   public:
