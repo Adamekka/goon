@@ -35,7 +35,7 @@ auto ShaderProgram::compile(
                 glGetShaderInfoLog(
                     shader, info_log.size(), nullptr, info_log.data()
                 );
-                std::println("{}", info_log.data());
+                std::println(stderr, "{}", info_log.data());
             }
         }
     };
@@ -58,7 +58,7 @@ auto ShaderProgram::link() -> std::unordered_map<std::string, ShaderArg>& {
             glGetProgramInfoLog(
                 shader, info_log.size(), nullptr, info_log.data()
             );
-            std::println("{}", info_log.data());
+            std::println(stderr, "{}", info_log.data());
         }
     }};
 
