@@ -1,3 +1,4 @@
+#include "core/panic.hpp"
 #include "input/input_manager.hpp"
 #include "scene/scene.hpp"
 #include "window/window.hpp"
@@ -9,7 +10,7 @@ auto main() -> int {
 
     // MARK: Create camera
 
-    constexpr auto CAMERA_RADIUS{3.0f};
+    constexpr auto CAMERA_RADIUS{5.0f};
 
     auto& camera{scene.create_camera(
         goon::transform::Transform{
@@ -53,13 +54,29 @@ auto main() -> int {
 
     // MARK: Create textures
 
-    const auto osaka_texture{goon::scene::object::material::texture::Texture{
-        "examples/assets/textures/osaka.jpg"
-    }};
+    const auto osaka_texture{[]() -> auto {
+        auto result{goon::scene::object::material::texture::Texture::load(
+            "examples/assets/textures/osaka.jpg"
+        )};
 
-    const auto yui_texture{goon::scene::object::material::texture::Texture{
-        "examples/assets/textures/yui.jpg"
-    }};
+        if (!result.has_value()) {
+            goon::core::panic(result.error());
+        }
+
+        return std::move(*result);
+    }()};
+
+    const auto yui_texture{[]() -> auto {
+        auto result{goon::scene::object::material::texture::Texture::load(
+            "examples/assets/textures/yui.jpg"
+        )};
+
+        if (!result.has_value()) {
+            goon::core::panic(result.error());
+        }
+
+        return std::move(*result);
+    }()};
 
     // MARK: Create materials
 
@@ -71,29 +88,34 @@ auto main() -> int {
         goon::scene::object::material::Material{shader_program, yui_texture}
     };
 
-    // MARK: Create objects
+    // MARK: Create objects from meshes
 
     auto* const osaka{scene.create_object(
-        goon::scene::object::mesh::Mesh{std::array{
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
-                goon::scene::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+        goon::scene::object::mesh::Mesh{
+            std::array{
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                },
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                },
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{0.0f, 0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{0.5f, 1.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                }
             },
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
-                goon::scene::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
-            },
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{0.0f, 0.4f, 0.0f},
-                goon::scene::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.5f, 1.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+            goon::scene::object::mesh::MeshDrawMode{
+                goon::scene::object::mesh::MeshDrawMode::Value::Triangles
             }
-        }},
+        },
         osaka_material,
         goon::transform::Transform{
             {-0.5f, 0.0f, 0.0f},
@@ -103,32 +125,37 @@ auto main() -> int {
     )};
 
     auto* const yui{scene.create_object(
-        goon::scene::object::mesh::Mesh{std::array{
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
-                goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+        goon::scene::object::mesh::Mesh{
+            std::array{
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                },
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                },
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{-0.4f, 0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{0.0f, 1.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                },
+                goon::scene::object::mesh::Vertex{
+                    goon::scene::object::mesh::Position{0.4f, 0.4f, 0.0f},
+                    goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
+                    goon::scene::object::mesh::TextureCoordinates{1.0f, 1.0f},
+                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                }
             },
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
-                goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
-            },
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{-0.4f, 0.4f, 0.0f},
-                goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{0.0f, 1.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
-            },
-            goon::scene::object::mesh::Vertex{
-                goon::scene::object::mesh::Position{0.4f, 0.4f, 0.0f},
-                goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                goon::scene::object::mesh::TextureCoordinates{1.0f, 1.0f},
-                goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+            goon::scene::object::mesh::MeshDrawMode{
+                goon::scene::object::mesh::MeshDrawMode::Value::TriangleStrip
             }
-        }},
+        },
         yui_material,
         goon::transform::Transform{
             {0.5f, 0.0f, 0.0f},
@@ -136,6 +163,26 @@ auto main() -> int {
             {1.0f, 1.0f, 1.0f}
         }
     )};
+
+    // MARK: Create objects from glTF models
+
+    auto* const miku{[&scene, &shader_program]() -> auto {
+        auto result{scene.create_object(
+            "examples/assets/models/miku.gltf",
+            shader_program,
+            goon::transform::Transform{
+                {0.0f, 0.0f, 0.0f},
+                goon::transform::Quaternion::identity(),
+                {1.0f, 1.0f, 1.0f}
+            }
+        )};
+
+        if (!result.has_value()) {
+            goon::core::panic(result.error());
+        }
+
+        return *result;
+    }()};
 
     // MARK: Create light
 
@@ -191,6 +238,10 @@ auto main() -> int {
 
         yui->transform.rotation = goon::transform::Quaternion::from_axis_angle(
             time, {1.0f, 0.0f, 0.0f}
+        );
+
+        miku->transform.rotation = goon::transform::Quaternion::from_axis_angle(
+            time, {0.0f, 1.0f, 0.0f}
         );
 
         // MARK: Draw

@@ -58,7 +58,8 @@ struct ShaderVarType final {
     constexpr ShaderVarType(Value value)
         : value{value} {}
 
-    constexpr explicit ShaderVarType(uint32_t value)
+    template<typename T>
+    constexpr explicit ShaderVarType(T value)
         : value{static_cast<Value>(value)} {}
 
     [[nodiscard]] constexpr auto description() const -> std::string_view {

@@ -23,6 +23,10 @@ endif()
 
 # MARK: - Dependencies
 
+# assimp
+find_package(assimp REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE assimp::assimp)
+
 # Boost
 find_package(Boost REQUIRED COMPONENTS hana)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::hana)

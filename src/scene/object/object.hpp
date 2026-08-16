@@ -4,6 +4,10 @@
 #include "material/material.hpp"
 #include "mesh/mesh.hpp"
 
+namespace goon::scene {
+class Scene;
+} // namespace goon::scene
+
 namespace goon::scene::object {
 
 class Object final {
@@ -28,8 +32,35 @@ class Object final {
         -> void;
 
   private:
-    mesh::Mesh mesh;
-    const material::Material* material;
+    friend class goon::scene::Scene;
+
+    struct Submesh final {
+        mesh::Mesh mesh;
+        const material::Material* material;
+
+        Submesh(mesh::Mesh mesh, const material::Material& material)
+            : mesh{std::move(mesh)}
+            , material{&material} {}
+    };
+
+    // Finalize these before submeshes capture pointers; moving their vectors
+    // preserves element addresses, but later reallocation would not.
+    std::vector<material::texture::Texture> textures;
+    std::vector<material::Material> materials;
+    std::vector<Submesh> submeshes;
+
+    Object(
+        std::vector<material::texture::Texture> textures,
+        std::vector<material::Material> materials,
+        std::vector<Submesh> submeshes,
+        transform::Transform transform
+    );
+
+    [[nodiscard]] static auto load(
+        const std::filesystem::path& path,
+        material::shader::ShaderProgram& shader_program,
+        transform::Transform transform
+    ) -> std::expected<Object, std::string>;
 };
 
 } // namespace goon::scene::object

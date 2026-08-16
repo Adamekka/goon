@@ -8,9 +8,9 @@ struct Color final {
     using Value = float;
     constexpr static auto DIMENSION{4};
 
-    Value r{0};
-    Value g{0};
-    Value b{0};
+    Value r{1};
+    Value g{1};
+    Value b{1};
     Value a{1};
 
     Color() = default;

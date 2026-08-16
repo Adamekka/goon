@@ -49,6 +49,12 @@ class Scene final {
         const object::material::Material& material,
         transform::Transform transform
     ) -> object::Object*;
+
+    [[nodiscard]] auto create_object(
+        const std::filesystem::path& path,
+        object::material::shader::ShaderProgram& shader_program,
+        transform::Transform transform
+    ) -> std::expected<object::Object*, std::string>;
 };
 
 } // namespace goon::scene
