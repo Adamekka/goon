@@ -13,7 +13,9 @@ auto Scene::create_object(
     const object::material::Material& material,
     const transform::Transform transform
 ) -> object::Object* {
-    return &*this->objects.emplace(std::move(mesh), material, transform);
+    return &*this->objects.emplace(
+        object::Object{std::move(mesh), material, transform}
+    );
 }
 
 auto Scene::create_object(

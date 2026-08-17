@@ -14,12 +14,6 @@ class Object final {
   public:
     transform::Transform transform;
 
-    Object(
-        mesh::Mesh mesh,
-        const material::Material& material,
-        transform::Transform transform
-    );
-
     Object(const Object&) = delete;
     Object(Object&&) = default;
 
@@ -32,7 +26,7 @@ class Object final {
         -> void;
 
   private:
-    friend class goon::scene::Scene;
+    friend class scene::Scene;
 
     struct Submesh final {
         mesh::Mesh mesh;
@@ -48,6 +42,12 @@ class Object final {
     std::vector<material::texture::Texture> textures;
     std::vector<material::Material> materials;
     std::vector<Submesh> submeshes;
+
+    Object(
+        mesh::Mesh mesh,
+        const material::Material& material,
+        transform::Transform transform
+    );
 
     Object(
         std::vector<material::texture::Texture> textures,

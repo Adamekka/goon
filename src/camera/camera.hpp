@@ -3,6 +3,10 @@
 #include "matrix/matrix.hpp"
 #include "transform/transform.hpp"
 
+namespace goon::scene {
+class Scene;
+} // namespace goon::scene
+
 namespace goon::camera {
 
 class Camera final {
@@ -14,22 +18,6 @@ class Camera final {
 
     transform::Transform transform;
     matrix::Matrix<float, 4, 4> projection;
-
-    constexpr explicit Camera(
-        const transform::Transform transform = transform::Transform{},
-        const float fov_radians = std::numbers::pi_v<float> / 4.0f,
-        const float aspect_ratio = 4.0f / 3.0f,
-        const float z_near = 0.1f,
-        const float z_far = 100.0f
-    )
-        : fov_radians{fov_radians}
-        , aspect_ratio{aspect_ratio}
-        , z_near{z_near}
-        , z_far{z_far}
-        , transform{transform}
-        , projection{matrix::Matrix<float, 4, 4>::perspective(
-              fov_radians, aspect_ratio, z_near, z_far
-          )} {}
 
     Camera(const Camera&) = delete;
     Camera(Camera&&) = default;
@@ -130,6 +118,25 @@ class Camera final {
             this->fov_radians, this->aspect_ratio, this->z_near, this->z_far
         );
     }
+
+  private:
+    friend class scene::Scene;
+
+    constexpr explicit Camera(
+        const transform::Transform transform,
+        const float fov_radians,
+        const float aspect_ratio,
+        const float z_near,
+        const float z_far
+    )
+        : fov_radians{fov_radians}
+        , aspect_ratio{aspect_ratio}
+        , z_near{z_near}
+        , z_far{z_far}
+        , transform{transform}
+        , projection{matrix::Matrix<float, 4, 4>::perspective(
+              fov_radians, aspect_ratio, z_near, z_far
+          )} {}
 };
 
 } // namespace goon::camera

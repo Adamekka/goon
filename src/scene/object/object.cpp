@@ -3,15 +3,6 @@
 
 namespace goon::scene::object {
 
-Object::Object(
-    mesh::Mesh mesh,
-    const material::Material& material,
-    const transform::Transform transform
-)
-    : transform{transform} {
-    this->submeshes.emplace_back(std::move(mesh), material);
-}
-
 auto Object::draw(const camera::Camera& camera, const light::Light& light) const
     -> void {
     const auto model_matrix{this->transform.get_matrix()};
@@ -24,6 +15,15 @@ auto Object::draw(const camera::Camera& camera, const light::Light& light) const
         );
         submesh.mesh.draw();
     }
+}
+
+Object::Object(
+    mesh::Mesh mesh,
+    const material::Material& material,
+    const transform::Transform transform
+)
+    : transform{transform} {
+    this->submeshes.emplace_back(std::move(mesh), material);
 }
 
 Object::Object(

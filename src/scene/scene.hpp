@@ -11,7 +11,14 @@ class Scene final {
     camera::Camera camera;
     plf::hive<object::Object> objects;
 
-    Scene() = default;
+    constexpr Scene()
+        : camera{camera::Camera{
+              transform::Transform{},
+              std::numbers::pi_v<float> / 4.0f,
+              4.0f / 3.0f,
+              0.1f,
+              100.0f
+          }} {}
 
     Scene(const Scene&) = delete;
     Scene(Scene&&) = delete;
