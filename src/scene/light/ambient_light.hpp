@@ -1,17 +1,19 @@
 #pragma once
 
-#include <array>
-
 namespace goon::scene::light {
 
 struct AmbientLight final {
-    std::array<float, 3> color;
+    float r;
+    float g;
+    float b;
     float intensity;
 
     constexpr explicit AmbientLight(
-        const std::array<float, 3> color, const float intensity
+        const float r, const float g, const float b, const float intensity
     )
-        : color{color}
+        : r{r}
+        , g{g}
+        , b{b}
         , intensity{intensity} {}
 };
 

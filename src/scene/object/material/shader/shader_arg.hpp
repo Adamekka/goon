@@ -1,6 +1,6 @@
 #pragma once
 
-#include "matrix/matrix.hpp"
+#include "math/matrix.hpp"
 #include "shader_var_type.hpp"
 
 namespace goon::scene::object::material::shader {
@@ -33,8 +33,8 @@ template<typename T> struct ShaderDataTraits;
 
 #define GOON_SHADER_MATRIX(TYPE, COLUMNS, ROWS, ENUM, FUNCTION)                \
     template<>                                                                 \
-    struct ShaderDataTraits<matrix::Matrix<TYPE, COLUMNS, ROWS>> final {       \
-        using Data = matrix::Matrix<TYPE, COLUMNS, ROWS>;                      \
+    struct ShaderDataTraits<math::Matrix<TYPE, COLUMNS, ROWS>> final {         \
+        using Data = math::Matrix<TYPE, COLUMNS, ROWS>;                        \
                                                                                \
         static constexpr auto SHADER_TYPE{ShaderVarType::Value::ENUM};         \
         static_assert(sizeof(Data) == sizeof(decltype(Data::values)));         \

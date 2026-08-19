@@ -5,16 +5,22 @@
 namespace goon::scene::light {
 
 struct DiffuseLight final {
-    std::array<float, 3> color;
+    float r;
+    float g;
+    float b;
     float intensity;
     std::array<float, 3> direction;
 
     constexpr explicit DiffuseLight(
-        const std::array<float, 3> color,
+        const float r,
+        const float g,
+        const float b,
         const float intensity,
         const std::array<float, 3> direction
     )
-        : color{color}
+        : r{r}
+        , g{g}
+        , b{b}
         , intensity{intensity}
         , direction{direction} {
         const auto direction_length_squared{

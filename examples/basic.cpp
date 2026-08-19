@@ -13,11 +13,9 @@ auto main() -> int {
     constexpr auto CAMERA_RADIUS{5.0f};
 
     auto& camera{scene.create_camera(
-        goon::transform::Transform{
-            {0.0f, 0.0f, CAMERA_RADIUS},
-            goon::transform::Quaternion::identity(),
-            {1.0f, 1.0f, 1.0f}
-        },
+        {{0.0f, 0.0f, CAMERA_RADIUS},
+         goon::transform::Quaternion::identity(),
+         {}},
         std::numbers::pi_v<float> / 4.0f,
         static_cast<float>(goon::window::Window::WIDTH)
             / static_cast<float>(goon::window::Window::HEIGHT)
@@ -39,15 +37,11 @@ auto main() -> int {
 
     shader_program.compile(
         "examples/assets/shaders/basic.vert",
-        goon::scene::object::material::shader::ShaderType{
-            goon::scene::object::material::shader::ShaderType::Value::Vertex
-        }
+        goon::scene::object::material::shader::ShaderType::Value::Vertex
     );
     shader_program.compile(
         "examples/assets/shaders/basic.frag",
-        goon::scene::object::material::shader::ShaderType{
-            goon::scene::object::material::shader::ShaderType::Value::Fragment
-        }
+        goon::scene::object::material::shader::ShaderType::Value::Fragment
     );
 
     const auto& _{shader_program.link()};
@@ -94,27 +88,25 @@ auto main() -> int {
         goon::scene::object::mesh::Mesh{
             std::array{
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{1.0f, 0.0f, 0.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {-0.4f, -0.4f, 0.0f},
+                    {1.0f, 0.0f, 0.0f, 1.0f},
+                    {0.0f, 0.0f},
+                    {0.0f, 0.0f, 1.0f}
                 },
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{0.0f, 1.0f, 0.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {0.4f, -0.4f, 0.0f},
+                    {0.0f, 1.0f, 0.0f, 1.0f},
+                    {1.0f, 0.0f},
+                    {0.0f, 0.0f, 1.0f}
                 },
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{0.0f, 0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{0.0f, 0.0f, 1.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{0.5f, 1.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {0.0f, 0.4f, 0.0f},
+                    {0.0f, 0.0f, 1.0f, 1.0f},
+                    {0.5f, 1.0f},
+                    {0.0f, 0.0f, 1.0f}
                 }
             },
-            goon::scene::object::mesh::MeshDrawMode{
-                goon::scene::object::mesh::MeshDrawMode::Value::Triangles
-            }
+            goon::scene::object::mesh::MeshDrawMode::Value::Triangles
         },
         osaka_material,
         goon::transform::Transform{
@@ -128,53 +120,41 @@ auto main() -> int {
         goon::scene::object::mesh::Mesh{
             std::array{
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{-0.4f, -0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{0.0f, 0.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {-0.4f, -0.4f, 0.0f},
+                    {1.0f, 1.0f, 0.0f, 1.0f},
+                    {0.0f, 0.0f},
+                    {0.0f, 0.0f, 1.0f}
                 },
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{0.4f, -0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{1.0f, 0.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {0.4f, -0.4f, 0.0f},
+                    {1.0f, 0.0f, 1.0f, 1.0f},
+                    {1.0f, 0.0f},
+                    {0.0f, 0.0f, 1.0f}
                 },
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{-0.4f, 0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{1.0f, 1.0f, 0.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{0.0f, 1.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {-0.4f, 0.4f, 0.0f},
+                    {1.0f, 1.0f, 0.0f, 1.0f},
+                    {0.0f, 1.0f},
+                    {0.0f, 0.0f, 1.0f}
                 },
                 goon::scene::object::mesh::Vertex{
-                    goon::scene::object::mesh::Position{0.4f, 0.4f, 0.0f},
-                    goon::scene::object::mesh::Color{1.0f, 0.0f, 1.0f, 1.0f},
-                    goon::scene::object::mesh::TextureCoordinates{1.0f, 1.0f},
-                    goon::scene::object::mesh::NormalVector{0.0f, 0.0f, 1.0f}
+                    {0.4f, 0.4f, 0.0f},
+                    {1.0f, 0.0f, 1.0f, 1.0f},
+                    {1.0f, 1.0f},
+                    {0.0f, 0.0f, 1.0f}
                 }
             },
-            goon::scene::object::mesh::MeshDrawMode{
-                goon::scene::object::mesh::MeshDrawMode::Value::TriangleStrip
-            }
+            goon::scene::object::mesh::MeshDrawMode::Value::TriangleStrip
         },
         yui_material,
-        goon::transform::Transform{
-            {0.5f, 0.0f, 0.0f},
-            goon::transform::Quaternion::identity(),
-            {1.0f, 1.0f, 1.0f}
-        }
+        {{0.5f, 0.0f, 0.0f}, goon::transform::Quaternion::identity(), {}}
     )};
 
     // MARK: Create objects from glTF models
 
     auto* const miku{[&scene, &shader_program]() -> auto {
         auto result{scene.create_object(
-            "examples/assets/models/miku.gltf",
-            shader_program,
-            goon::transform::Transform{
-                {0.0f, 0.0f, 0.0f},
-                goon::transform::Quaternion::identity(),
-                {1.0f, 1.0f, 1.0f}
-            }
+            "examples/assets/models/miku.gltf", shader_program, {}
         )};
 
         if (!result.has_value()) {
@@ -187,9 +167,9 @@ auto main() -> int {
     // MARK: Create light
 
     const auto& _{scene.create_light(
-        goon::scene::light::AmbientLight{{1.0f, 1.0f, 1.0f}, 0.5f},
+        goon::scene::light::AmbientLight{1.0f, 1.0f, 1.0f, 0.5f},
         goon::scene::light::DiffuseLight{
-            {1.0f, 1.0f, 1.0f}, 1.0f, {1.0f, 1.0f, 1.0f}
+            1.0f, 1.0f, 1.0f, 1.0f, {1.0f, 1.0f, 1.0f}
         }
     )};
 
@@ -219,7 +199,7 @@ auto main() -> int {
         // MARK: Update camera
 
         const auto horizontal_radius{CAMERA_RADIUS * std::cos(camera_pitch)};
-        const auto camera_position{std::array{
+        const auto camera_position{goon::transform::Position{
             horizontal_radius * std::sin(camera_yaw),
             CAMERA_RADIUS * std::sin(camera_pitch),
             horizontal_radius * std::cos(camera_yaw)

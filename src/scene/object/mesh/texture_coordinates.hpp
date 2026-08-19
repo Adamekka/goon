@@ -11,7 +11,7 @@ struct TextureCoordinates final {
     Value u{0};
     Value v{0};
 
-    TextureCoordinates() = default;
+    constexpr TextureCoordinates() = default;
 
     constexpr TextureCoordinates(const Value u, const Value v)
         : u{u}

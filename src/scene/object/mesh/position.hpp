@@ -1,6 +1,6 @@
 #pragma once
 
-#include <array>
+#include <cstddef>
 
 namespace goon::scene::object::mesh {
 
@@ -18,11 +18,6 @@ struct Position final {
         : x{x}
         , y{y}
         , z{z} {}
-
-    constexpr explicit Position(const std::array<Value, 3> values)
-        : x{values[0]}
-        , y{values[1]}
-        , z{values[2]} {}
 };
 
 } // namespace goon::scene::object::mesh

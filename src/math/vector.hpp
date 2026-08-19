@@ -2,7 +2,7 @@
 
 #include "core/assert.hpp"
 
-namespace goon::vector {
+namespace goon::math {
 
 template<std::floating_point T, size_t Size>
 [[nodiscard]] constexpr auto normalize(const std::array<T, Size>& values)
@@ -44,4 +44,4 @@ cross(const std::array<T, 3>& left, const std::array<T, 3>& right)
     };
 }
 
-} // namespace goon::vector
+} // namespace goon::math

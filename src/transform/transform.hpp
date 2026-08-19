@@ -1,39 +1,28 @@
 #pragma once
 
-#include "matrix/matrix.hpp"
+#include "math/matrix.hpp"
+#include "position.hpp"
 #include "quaternion.hpp"
+#include "scale.hpp"
 
 namespace goon::transform {
 
 struct Transform final {
-    using Vector = std::array<float, 3>;
-
-    Vector position{0.0f, 0.0f, 0.0f};
+    Position position;
     Quaternion rotation{Quaternion::identity()};
-    Vector scale{1.0f, 1.0f, 1.0f};
+    Scale scale;
 
     constexpr Transform() = default;
 
     constexpr Transform(
-        const Vector position, const Quaternion rotation, const Vector scale
+        const Position position, const Quaternion rotation, const Scale scale
     )
         : position{position}
         , rotation{rotation}
-        , scale{scale} {
-        core::assert_that(std::isfinite(rotation.get_w()));
-        core::assert_that(std::isfinite(rotation.get_x()));
-        core::assert_that(std::isfinite(rotation.get_y()));
-        core::assert_that(std::isfinite(rotation.get_z()));
-        core::assert_that(std::isfinite(position[0]));
-        core::assert_that(std::isfinite(position[1]));
-        core::assert_that(std::isfinite(position[2]));
-        core::assert_that(std::isfinite(scale[0]));
-        core::assert_that(std::isfinite(scale[1]));
-        core::assert_that(std::isfinite(scale[2]));
-    }
+        , scale{scale} {}
 
     [[nodiscard]] constexpr auto get_matrix() const
-        -> matrix::Matrix<float, 4, 4> {
+        -> math::Matrix<float, 4, 4> {
         const auto w{this->rotation.get_w()};
         const auto x{this->rotation.get_x()};
         const auto y{this->rotation.get_y()};
@@ -50,20 +39,20 @@ struct Transform final {
         const auto zw{2.0f * z * w};
 
         // clang-format off
-        return matrix::Matrix<float, 4, 4>{std::array{
-            (1.0f - yy - zz) * this->scale[0], (xy + zw) * this->scale[0],        (xz - yw) * this->scale[0],        0.0f,
-            (xy - zw) * this->scale[1],        (1.0f - xx - zz) * this->scale[1], (yz + xw) * this->scale[1],        0.0f,
-            (xz + yw) * this->scale[2],        (yz - xw) * this->scale[2],        (1.0f - xx - yy) * this->scale[2], 0.0f,
-            this->position[0],                 this->position[1],                 this->position[2],                 1.0f
+        return math::Matrix<float, 4, 4>{std::array{
+            (1.0f - yy - zz) * this->scale.x, (xy + zw) * this->scale.x,        (xz - yw) * this->scale.x,        0.0f,
+            (xy - zw) * this->scale.y,        (1.0f - xx - zz) * this->scale.y, (yz + xw) * this->scale.y,        0.0f,
+            (xz + yw) * this->scale.z,        (yz - xw) * this->scale.z,        (1.0f - xx - yy) * this->scale.z, 0.0f,
+            this->position.x,                 this->position.y,                 this->position.z,                 1.0f
         }};
         // clang-format on
     }
 
     [[nodiscard]] constexpr auto get_normal_matrix() const
-        -> matrix::Matrix<float, 3, 3> {
-        core::assert_ne(this->scale[0], 0.0f);
-        core::assert_ne(this->scale[1], 0.0f);
-        core::assert_ne(this->scale[2], 0.0f);
+        -> math::Matrix<float, 3, 3> {
+        core::assert_ne(this->scale.x, 0.0f);
+        core::assert_ne(this->scale.y, 0.0f);
+        core::assert_ne(this->scale.z, 0.0f);
 
         const auto w{this->rotation.get_w()};
         const auto x{this->rotation.get_x()};
@@ -81,10 +70,10 @@ struct Transform final {
         const auto zw{2.0f * z * w};
 
         // clang-format off
-        return matrix::Matrix<float, 3, 3>{std::array{
-            (1.0f - yy - zz) / this->scale[0], (xy + zw) / this->scale[0],        (xz - yw) / this->scale[0],
-            (xy - zw) / this->scale[1],        (1.0f - xx - zz) / this->scale[1], (yz + xw) / this->scale[1],
-            (xz + yw) / this->scale[2],        (yz - xw) / this->scale[2],        (1.0f - xx - yy) / this->scale[2]
+        return math::Matrix<float, 3, 3>{std::array{
+            (1.0f - yy - zz) / this->scale.x, (xy + zw) / this->scale.x,        (xz - yw) / this->scale.x,
+            (xy - zw) / this->scale.y,        (1.0f - xx - zz) / this->scale.y, (yz + xw) / this->scale.y,
+            (xz + yw) / this->scale.z,        (yz - xw) / this->scale.z,        (1.0f - xx - yy) / this->scale.z
         }};
         // clang-format on
     }

@@ -32,7 +32,7 @@ auto format_assertion_value(const Value& value) -> std::string {
 
 } // namespace detail
 
-inline auto assert_that(
+constexpr auto assert_that(
     const bool c /* condition */,
     const std::source_location location = std::source_location::current()
 ) -> void {
@@ -45,7 +45,7 @@ template<typename Left, typename Right>
     requires requires(const Left& l, const Right& r) {
         { l == r } -> std::convertible_to<bool>;
     }
-inline auto assert_eq(
+constexpr auto assert_eq(
     const Left& l,
     const Right& r,
     const std::source_location location = std::source_location::current()
@@ -68,7 +68,7 @@ template<typename Left, typename Right>
     requires requires(const Left& l, const Right& r) {
         { l != r } -> std::convertible_to<bool>;
     }
-inline auto assert_ne(
+constexpr auto assert_ne(
     const Left& l,
     const Right& r,
     const std::source_location location = std::source_location::current()

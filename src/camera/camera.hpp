@@ -16,7 +16,7 @@ class Camera final {
     float z_far;
 
     transform::Transform transform;
-    matrix::Matrix<float, 4, 4> projection;
+    math::Matrix<float, 4, 4> projection;
 
     Camera(const Camera&) = delete;
     Camera(Camera&&) = default;
@@ -26,16 +26,18 @@ class Camera final {
     auto operator=(const Camera&) -> Camera& = delete;
     auto operator=(Camera&&) -> Camera& = default;
 
-    constexpr auto look_at(transform::Transform::Vector target) -> void {
+    constexpr auto look_at(transform::Position target) -> void {
         this->look_at(this->transform.position, target);
     }
 
     constexpr auto look_at(
-        transform::Transform::Vector eye,
-        transform::Transform::Vector center,
-        transform::Transform::Vector up = {0.0f, 1.0f, 0.0f}
+        transform::Position eye,
+        transform::Position center,
+        transform::Position up = {0.0f, 1.0f, 0.0f}
     ) -> void {
-        const auto view{matrix::Matrix<float, 4, 4>::look_at(eye, center, up)};
+        const auto view{math::Matrix<float, 4, 4>::look_at(
+            eye.to_array(), center.to_array(), up.to_array()
+        )};
 
         const auto r00{view.get<0, 0>()};
         const auto r01{view.get<0, 1>()};
@@ -93,10 +95,8 @@ class Camera final {
     }
 
     [[nodiscard]] constexpr auto get_view_matrix() const
-        -> matrix::Matrix<float, 4, 4> {
-        constexpr auto UNIT_SCALE{
-            transform::Transform::Vector{1.0f, 1.0f, 1.0f}
-        };
+        -> math::Matrix<float, 4, 4> {
+        constexpr auto UNIT_SCALE{transform::Scale{1.0f, 1.0f, 1.0f}};
         core::assert_eq(this->transform.scale, UNIT_SCALE);
 
         auto view{transform::Transform{
@@ -104,16 +104,16 @@ class Camera final {
         }
                       .get_matrix()};
         view.translate(
-            {-this->transform.position[0],
-             -this->transform.position[1],
-             -this->transform.position[2]}
+            {-this->transform.position.x,
+             -this->transform.position.y,
+             -this->transform.position.z}
         );
         return view;
     }
 
     constexpr auto update_projection(const float aspect_ratio) -> void {
         this->aspect_ratio = aspect_ratio;
-        this->projection = matrix::Matrix<float, 4, 4>::perspective(
+        this->projection = math::Matrix<float, 4, 4>::perspective(
             this->fov_radians, this->aspect_ratio, this->z_near, this->z_far
         );
     }
@@ -133,7 +133,7 @@ class Camera final {
         , z_near{z_near}
         , z_far{z_far}
         , transform{transform}
-        , projection{matrix::Matrix<float, 4, 4>::perspective(
+        , projection{math::Matrix<float, 4, 4>::perspective(
               fov_radians, aspect_ratio, z_near, z_far
           )} {}
 };

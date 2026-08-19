@@ -1,11 +1,11 @@
 #pragma once
 
 #include "core/concepts/floating_scalar.hpp"
-#include "vector/vector.hpp"
+#include "vector.hpp"
 #include <numbers>
 #include <print>
 
-namespace goon::matrix {
+namespace goon::math {
 
 template<typename T, size_t Columns, size_t Rows>
     requires(
@@ -66,19 +66,17 @@ class Matrix final {
     ) -> Matrix
         requires(Columns == 4 && Rows == 4)
     {
-        const auto forward{goon::vector::normalize(
+        const auto forward{normalize(
             std::array<T, 3>{
                 center[0] - eye[0], center[1] - eye[1], center[2] - eye[2]
             }
         )};
-        const auto side{
-            goon::vector::normalize(goon::vector::cross(forward, up))
-        };
-        const auto corrected_up{goon::vector::cross(side, forward)};
+        const auto side{normalize(cross(forward, up))};
+        const auto corrected_up{cross(side, forward)};
 
-        const auto translation_x{-goon::vector::dot(side, eye)};
-        const auto translation_y{-goon::vector::dot(corrected_up, eye)};
-        const auto translation_z{goon::vector::dot(forward, eye)};
+        const auto translation_x{-dot(side, eye)};
+        const auto translation_y{-dot(corrected_up, eye)};
+        const auto translation_z{dot(forward, eye)};
 
         // clang-format off
         return Matrix{std::array<T, Columns * Rows>{
@@ -418,4 +416,4 @@ class Matrix final {
     }
 };
 
-} // namespace goon::matrix
+} // namespace goon::math

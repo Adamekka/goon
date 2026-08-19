@@ -23,6 +23,11 @@ class Quaternion final {
         this->x /= length;
         this->y /= length;
         this->z /= length;
+
+        core::assert_that(std::isfinite(w));
+        core::assert_that(std::isfinite(x));
+        core::assert_that(std::isfinite(y));
+        core::assert_that(std::isfinite(z));
     }
 
     [[nodiscard]] static consteval auto identity() -> Quaternion {

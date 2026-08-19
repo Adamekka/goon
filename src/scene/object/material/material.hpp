@@ -38,7 +38,13 @@ class Material final {
 
         if (light.ambient_light.has_value()) {
             shader_args.at("ambient_color")
-                .set_uniform(light.ambient_light->color);
+                .set_uniform(
+                    std::array{
+                        light.ambient_light->r,
+                        light.ambient_light->g,
+                        light.ambient_light->b
+                    }
+                );
             shader_args.at("ambient_intensity")
                 .set_uniform(light.ambient_light->intensity);
         } else {
@@ -49,7 +55,13 @@ class Material final {
 
         if (light.diffuse_light.has_value()) {
             shader_args.at("diffuse_color")
-                .set_uniform(light.diffuse_light->color);
+                .set_uniform(
+                    std::array{
+                        light.diffuse_light->r,
+                        light.diffuse_light->g,
+                        light.diffuse_light->b
+                    }
+                );
             shader_args.at("diffuse_intensity")
                 .set_uniform(light.diffuse_light->intensity);
             shader_args.at("diffuse_direction")
