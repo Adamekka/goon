@@ -1,8 +1,6 @@
 #pragma once
 
-#include <array>
-#include <cassert>
-#include <cmath>
+#include "core/assert.hpp"
 
 namespace goon::transform {
 
@@ -18,7 +16,8 @@ class Quaternion final {
         const auto length{std::hypot(
             std::hypot(this->w, this->x), std::hypot(this->y, this->z)
         )};
-        assert(std::isfinite(length) && length > 0.0f);
+        core::assert_that(std::isfinite(length));
+        core::assert_that(length > 0.0f);
 
         this->w /= length;
         this->x /= length;
@@ -33,9 +32,10 @@ class Quaternion final {
     [[nodiscard]] static constexpr auto
     from_axis_angle(const float radians, const std::array<float, 3>& axis)
         -> Quaternion {
-        assert(std::isfinite(radians));
+        core::assert_that(std::isfinite(radians));
         const auto axis_length{std::hypot(axis[0], axis[1], axis[2])};
-        assert(std::isfinite(axis_length) && axis_length > 0.0f);
+        core::assert_that(std::isfinite(axis_length));
+        core::assert_that(axis_length > 0.0f);
 
         const auto half_radians{radians / 2.0f};
         const auto scale{std::sin(half_radians) / axis_length};

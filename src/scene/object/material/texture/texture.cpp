@@ -1,7 +1,7 @@
 #include "texture.hpp"
+#include "core/assert.hpp"
 #include "core/defer.hpp"
 #include "gl.hpp"
-#include <cassert>
 #include <stb/stb_image.h>
 
 namespace goon::scene::object::material::texture {
@@ -9,9 +9,9 @@ namespace goon::scene::object::material::texture {
 Texture::Texture(
     const uint8_t* const pixels, const int32_t width, const int32_t height
 ) {
-    assert(pixels != nullptr);
-    assert(width > 0);
-    assert(height > 0);
+    core::assert_ne(pixels, nullptr);
+    core::assert_that(width > 0);
+    core::assert_that(height > 0);
 
     glGenTextures(1, &this->id);
     this->bind();

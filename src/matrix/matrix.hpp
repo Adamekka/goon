@@ -114,9 +114,9 @@ class Matrix final {
         const auto height{top - bottom};
         const auto depth{z_far - z_near};
 
-        assert(width != 0);
-        assert(height != 0);
-        assert(depth != 0);
+        core::assert_ne(width, 0);
+        core::assert_ne(height, 0);
+        core::assert_ne(depth, 0);
 
         // clang-format off
         return Matrix{std::array<T, Columns * Rows>{
@@ -137,10 +137,11 @@ class Matrix final {
         requires(Columns == 4 && Rows == 4)
     {
         // Use perspective_relaxed for intentional nonstandard projections
-        assert(fov_y_radians > 0 && fov_y_radians < std::numbers::pi_v<T>);
-        assert(aspect_ratio > 0);
-        assert(z_near > 0);
-        assert(z_far > z_near);
+        core::assert_that(fov_y_radians > 0);
+        core::assert_that(fov_y_radians < std::numbers::pi_v<T>);
+        core::assert_that(aspect_ratio > 0);
+        core::assert_that(z_near > 0);
+        core::assert_that(z_far > z_near);
 
         return perspective_relaxed(fov_y_radians, aspect_ratio, z_near, z_far);
     }
@@ -153,19 +154,20 @@ class Matrix final {
     ) -> Matrix
         requires(Columns == 4 && Rows == 4)
     {
-        assert(aspect_ratio != 0);
-        assert(z_near != 0);
-        assert(z_far != 0);
+        core::assert_ne(aspect_ratio, 0);
+        core::assert_ne(z_near, 0);
+        core::assert_ne(z_far, 0);
 
         const auto tangent{std::tan(fov_y_radians / static_cast<T>(2))};
         const auto depth{z_far - z_near};
         const auto horizontal_denominator{aspect_ratio * tangent};
 
-        assert(std::isfinite(tangent) && tangent != 0);
-        assert(
-            std::isfinite(horizontal_denominator) && horizontal_denominator != 0
-        );
-        assert(std::isfinite(depth) && depth != 0);
+        core::assert_that(std::isfinite(tangent));
+        core::assert_ne(tangent, 0);
+        core::assert_that(std::isfinite(horizontal_denominator));
+        core::assert_ne(horizontal_denominator, 0);
+        core::assert_that(std::isfinite(depth));
+        core::assert_ne(depth, 0);
 
         const auto horizontal_scale{static_cast<T>(1) / horizontal_denominator};
         const auto vertical_scale{static_cast<T>(1) / tangent};
@@ -174,10 +176,13 @@ class Matrix final {
             -(static_cast<T>(2) * z_far * z_near) / depth
         };
 
-        assert(std::isfinite(horizontal_scale) && horizontal_scale != 0);
-        assert(std::isfinite(vertical_scale) && vertical_scale != 0);
-        assert(std::isfinite(depth_scale));
-        assert(std::isfinite(depth_translation) && depth_translation != 0);
+        core::assert_that(std::isfinite(horizontal_scale));
+        core::assert_ne(horizontal_scale, 0);
+        core::assert_that(std::isfinite(vertical_scale));
+        core::assert_ne(vertical_scale, 0);
+        core::assert_that(std::isfinite(depth_scale));
+        core::assert_that(std::isfinite(depth_translation));
+        core::assert_ne(depth_translation, 0);
 
         // clang-format off
         return Matrix{std::array<T, Columns * Rows>{
@@ -307,7 +312,8 @@ class Matrix final {
         requires(Columns == 4 && Rows == 4)
     {
         const auto axis_length{std::hypot(axis[0], axis[1], axis[2])};
-        assert(std::isfinite(axis_length) && axis_length > 0);
+        core::assert_that(std::isfinite(axis_length));
+        core::assert_that(axis_length > 0);
 
         const auto x{axis[0] / axis_length};
         const auto y{axis[1] / axis_length};

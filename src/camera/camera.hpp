@@ -1,6 +1,5 @@
 #pragma once
 
-#include "matrix/matrix.hpp"
 #include "transform/transform.hpp"
 
 namespace goon::scene {
@@ -98,7 +97,7 @@ class Camera final {
         constexpr auto UNIT_SCALE{
             transform::Transform::Vector{1.0f, 1.0f, 1.0f}
         };
-        assert(this->transform.scale == UNIT_SCALE);
+        core::assert_eq(this->transform.scale, UNIT_SCALE);
 
         auto view{transform::Transform{
             {0.0f, 0.0f, 0.0f}, this->transform.rotation.conjugate(), UNIT_SCALE

@@ -1,5 +1,4 @@
 #include "window.hpp"
-#include "core/panic.hpp"
 #include <stb/stb_image.h>
 
 namespace goon::window {
@@ -62,7 +61,7 @@ auto Window::init() -> void {
             };
 
             if (self->camera == nullptr) {
-                goon::core::panic("Camera not set in Window");
+                core::panic("Camera not set in Window");
             }
 
             self->camera->update_projection(
@@ -87,7 +86,7 @@ auto Window::init() -> void {
 
 auto Window::run(const std::function<void()>& callback) const -> void {
     if (this->window == nullptr) {
-        goon::core::panic("Failed to initialize window");
+        core::panic("Failed to initialize window");
     }
 
     while (glfwWindowShouldClose(this->window) == 0) {

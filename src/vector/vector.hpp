@@ -1,8 +1,6 @@
 #pragma once
 
-#include <array>
-#include <cassert>
-#include <cmath>
+#include "core/assert.hpp"
 
 namespace goon::vector {
 
@@ -13,7 +11,8 @@ template<std::floating_point T, size_t Size>
     for (const auto value : values) {
         length = std::hypot(length, value);
     }
-    assert(std::isfinite(length) && length > 0);
+    core::assert_that(std::isfinite(length));
+    core::assert_that(length > 0);
 
     auto result{values};
     for (auto& value : result) {

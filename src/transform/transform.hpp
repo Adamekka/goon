@@ -20,16 +20,16 @@ struct Transform final {
         : position{position}
         , rotation{rotation}
         , scale{scale} {
-        assert(std::isfinite(rotation.get_w()));
-        assert(std::isfinite(rotation.get_x()));
-        assert(std::isfinite(rotation.get_y()));
-        assert(std::isfinite(rotation.get_z()));
-        assert(std::isfinite(position[0]));
-        assert(std::isfinite(position[1]));
-        assert(std::isfinite(position[2]));
-        assert(std::isfinite(scale[0]));
-        assert(std::isfinite(scale[1]));
-        assert(std::isfinite(scale[2]));
+        core::assert_that(std::isfinite(rotation.get_w()));
+        core::assert_that(std::isfinite(rotation.get_x()));
+        core::assert_that(std::isfinite(rotation.get_y()));
+        core::assert_that(std::isfinite(rotation.get_z()));
+        core::assert_that(std::isfinite(position[0]));
+        core::assert_that(std::isfinite(position[1]));
+        core::assert_that(std::isfinite(position[2]));
+        core::assert_that(std::isfinite(scale[0]));
+        core::assert_that(std::isfinite(scale[1]));
+        core::assert_that(std::isfinite(scale[2]));
     }
 
     [[nodiscard]] constexpr auto get_matrix() const
@@ -61,9 +61,9 @@ struct Transform final {
 
     [[nodiscard]] constexpr auto get_normal_matrix() const
         -> matrix::Matrix<float, 3, 3> {
-        assert(this->scale[0] != 0.0f);
-        assert(this->scale[1] != 0.0f);
-        assert(this->scale[2] != 0.0f);
+        core::assert_ne(this->scale[0], 0.0f);
+        core::assert_ne(this->scale[1], 0.0f);
+        core::assert_ne(this->scale[2], 0.0f);
 
         const auto w{this->rotation.get_w()};
         const auto x{this->rotation.get_x()};

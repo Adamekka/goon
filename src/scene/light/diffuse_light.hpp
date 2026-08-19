@@ -1,8 +1,6 @@
 #pragma once
 
-#include <array>
-#include <cassert>
-#include <cmath>
+#include "core/assert.hpp"
 
 namespace goon::scene::light {
 
@@ -23,10 +21,8 @@ struct DiffuseLight final {
             (direction[0] * direction[0]) + (direction[1] * direction[1])
             + (direction[2] * direction[2])
         };
-        assert(
-            std::isfinite(direction_length_squared)
-            && direction_length_squared > 0.0f
-        );
+        core::assert_that(std::isfinite(direction_length_squared));
+        core::assert_that(direction_length_squared > 0.0f);
     }
 };
 

@@ -2,7 +2,6 @@
 
 #include "ambient_light.hpp"
 #include "diffuse_light.hpp"
-#include <optional>
 
 namespace goon::scene {
 class Scene;

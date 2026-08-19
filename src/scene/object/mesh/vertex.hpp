@@ -1,9 +1,9 @@
 #pragma once
 
-#include "boost/hana/define_struct.hpp" // IWYU pragma: export
 #include "color.hpp"
 #include "normal_vector.hpp"
 #include "texture_coordinates.hpp"
+#include <boost/hana/define_struct.hpp> // IWYU pragma: export
 
 namespace goon::scene::object::mesh {
 

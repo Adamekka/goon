@@ -1,6 +1,5 @@
 #include "shader_program.hpp"
 #include <fstream>
-#include <print>
 
 namespace goon::scene::object::material::shader {
 
@@ -119,8 +118,7 @@ auto ShaderProgram::link() -> std::unordered_map<std::string, ShaderArg>& {
 
         if (location == -1) {
             // Unexpected for an active default-block uniform.
-            assert(false && "Uniform is active but has no location");
-            continue;
+            core::panic("Uniform is active but has no location");
         }
 
         this->args.emplace(

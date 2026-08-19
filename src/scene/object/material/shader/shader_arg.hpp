@@ -2,7 +2,6 @@
 
 #include "matrix/matrix.hpp"
 #include "shader_var_type.hpp"
-#include <cassert>
 
 namespace goon::scene::object::material::shader {
 
@@ -120,7 +119,9 @@ class ShaderArg final {
 
     template<detail::ShaderData T>
     auto set_uniform(const T& data) const -> void {
-        assert(this->type.value == detail::ShaderDataTraits<T>::SHADER_TYPE);
+        core::assert_eq(
+            this->type.value, detail::ShaderDataTraits<T>::SHADER_TYPE
+        );
         detail::ShaderDataTraits<T>::pass(this->location, data);
     }
 
