@@ -1,6 +1,6 @@
 #pragma once
 
-#include "camera/camera.hpp"
+#include "../camera/camera.hpp"
 #include "material/material.hpp"
 #include "mesh/mesh.hpp"
 

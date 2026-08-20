@@ -11,7 +11,7 @@ struct DiffuseLight final {
     float intensity;
     std::array<float, 3> direction;
 
-    constexpr explicit DiffuseLight(
+    constexpr DiffuseLight(
         const float r,
         const float g,
         const float b,

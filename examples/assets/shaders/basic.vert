@@ -13,10 +13,13 @@ uniform mat4 projection;
 out vec4 vertex_color;
 out vec2 texture_coordinates;
 out vec3 surface_normal;
+out vec3 fragment_position;
 
 void main() {
-    gl_Position = projection * view * model * vec4(pos, 1.0);
+    vec4 world_position = model * vec4(pos, 1.0);
+    gl_Position = projection * view * world_position;
     vertex_color = color;
     texture_coordinates = uv;
     surface_normal = normal_matrix * normal;
+    fragment_position = world_position.xyz;
 }

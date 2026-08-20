@@ -148,8 +148,24 @@ auto goon::scene::object::importer::ModelImporter::import(
                 );
             }
 
+            auto shininess{float{}};
+            if (material->Get(AI_MATKEY_SHININESS, shininess) != AI_SUCCESS) {
+                return failure(
+                    "material " + std::to_string(mesh->mMaterialIndex)
+                    + " has no shininess value"
+                );
+            }
+            if (!std::isfinite(shininess) || shininess < 0.0f) {
+                return failure(
+                    "material " + std::to_string(mesh->mMaterialIndex)
+                    + " has invalid shininess"
+                );
+            }
+
             material_index = materials.size();
-            materials.emplace_back(static_cast<size_t>(texture_index));
+            materials.emplace_back(
+                static_cast<size_t>(texture_index), shininess
+            );
         }
 
         auto vertices{std::vector<mesh::Vertex>{}};

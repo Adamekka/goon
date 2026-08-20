@@ -8,7 +8,7 @@ struct AmbientLight final {
     float b;
     float intensity;
 
-    constexpr explicit AmbientLight(
+    constexpr AmbientLight(
         const float r, const float g, const float b, const float intensity
     )
         : r{r}

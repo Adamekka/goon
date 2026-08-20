@@ -6,7 +6,7 @@ namespace goon::scene {
 class Scene;
 } // namespace goon::scene
 
-namespace goon::camera {
+namespace goon::scene::camera {
 
 class Camera final {
   public:
@@ -138,4 +138,4 @@ class Camera final {
           )} {}
 };
 
-} // namespace goon::camera
+} // namespace goon::scene::camera

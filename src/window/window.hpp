@@ -1,7 +1,7 @@
 #pragma once
 
-#include "camera/camera.hpp"
 #include "gl.hpp"
+#include "scene/camera/camera.hpp"
 #include <functional>
 
 namespace goon::window {
@@ -20,7 +20,7 @@ class Window final {
     [[nodiscard]] static auto instance() -> Window&;
 
     /// Set before calling init()
-    auto set_camera(camera::Camera& camera) -> void;
+    auto set_camera(scene::camera::Camera& camera) -> void;
 
     auto init() -> void;
 
@@ -30,7 +30,7 @@ class Window final {
     // nullptr means not ready
     GLFWwindow* window{nullptr};
 
-    camera::Camera* camera{nullptr};
+    scene::camera::Camera* camera{nullptr};
 
     Window() = default;
 

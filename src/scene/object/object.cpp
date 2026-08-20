@@ -11,7 +11,12 @@ auto Object::draw(const camera::Camera& camera, const light::Light& light) const
 
     for (const auto& submesh : this->submeshes) {
         submesh.material->bind(
-            model_matrix, normal_matrix, view_matrix, camera.projection, light
+            model_matrix,
+            normal_matrix,
+            view_matrix,
+            camera.projection,
+            camera.transform.position.to_array(),
+            light
         );
         submesh.mesh.draw();
     }
@@ -89,7 +94,11 @@ auto Object::load(
             };
         }
 
-        materials.emplace_back(shader_program, textures[texture_index]);
+        materials.emplace_back(
+            shader_program,
+            textures[texture_index],
+            imported_model.materials[material_index].shininess
+        );
     }
 
     auto submeshes{std::vector<Submesh>{}};

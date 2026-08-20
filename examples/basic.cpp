@@ -74,13 +74,13 @@ auto main() -> int {
 
     // MARK: Create materials
 
-    const auto osaka_material{
-        goon::scene::object::material::Material{shader_program, osaka_texture}
-    };
+    const auto osaka_material{goon::scene::object::material::Material{
+        shader_program, osaka_texture, 32.0f
+    }};
 
-    const auto yui_material{
-        goon::scene::object::material::Material{shader_program, yui_texture}
-    };
+    const auto yui_material{goon::scene::object::material::Material{
+        shader_program, yui_texture, 32.0f
+    }};
 
     // MARK: Create objects from meshes
 
@@ -167,8 +167,11 @@ auto main() -> int {
     // MARK: Create light
 
     const auto& _{scene.create_light(
-        goon::scene::light::AmbientLight{1.0f, 1.0f, 1.0f, 0.5f},
+        goon::scene::light::AmbientLight{1.0f, 1.0f, 1.0f, 0.2f},
         goon::scene::light::DiffuseLight{
+            1.0f, 1.0f, 1.0f, 1.0f, {1.0f, 1.0f, 1.0f}
+        },
+        goon::scene::light::SpecularLight{
             1.0f, 1.0f, 1.0f, 1.0f, {1.0f, 1.0f, 1.0f}
         }
     )};

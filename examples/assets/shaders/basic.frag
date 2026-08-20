@@ -3,6 +3,7 @@
 in vec4 vertex_color;
 in vec2 texture_coordinates;
 in vec3 surface_normal;
+in vec3 fragment_position;
 
 uniform sampler2D texture_sampler;
 
@@ -12,6 +13,13 @@ uniform float ambient_intensity;
 uniform vec3 diffuse_color;
 uniform float diffuse_intensity;
 uniform vec3 diffuse_direction;
+
+uniform vec3 specular_color;
+uniform float specular_intensity;
+uniform vec3 specular_direction;
+
+uniform vec3 camera_position;
+uniform float shininess;
 
 out vec4 color;
 
@@ -31,5 +39,23 @@ void main() {
     );
     vec3 diffuse = diffuse_color * diffuse_intensity * diffuse_factor;
 
-    color = vec4(albedo.rgb * (ambient + diffuse), albedo.a);
+    // Specular light
+    vec3 specular_direction_normalized = normalize(specular_direction);
+    vec3 view_direction = normalize(camera_position - fragment_position);
+    vec3 reflection_direction = reflect(
+        specular_direction_normalized, surface_normal_normalized
+    );
+
+    float specular_factor = 0.0;
+    if (
+        shininess > 0.0
+        && dot(surface_normal_normalized, -specular_direction_normalized) > 0.0
+    ) {
+        specular_factor = pow(
+            max(dot(view_direction, reflection_direction), 0.0), shininess
+        );
+    }
+    vec3 specular = specular_color * specular_intensity * specular_factor;
+
+    color = vec4(albedo.rgb * (ambient + diffuse) + specular, albedo.a);
 }

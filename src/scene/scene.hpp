@@ -45,9 +45,11 @@ class Scene final {
 
     [[nodiscard]] constexpr auto create_light(
         const std::optional<light::AmbientLight> ambient_light = std::nullopt,
-        const std::optional<light::DiffuseLight> diffuse_light = std::nullopt
+        const std::optional<light::DiffuseLight> diffuse_light = std::nullopt,
+        const std::optional<light::SpecularLight> specular_light = std::nullopt
     ) -> light::Light& {
-        this->light = light::Light{ambient_light, diffuse_light};
+        this->light
+            = light::Light{ambient_light, diffuse_light, specular_light};
         return this->light;
     }
 

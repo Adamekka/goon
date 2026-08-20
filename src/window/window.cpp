@@ -15,7 +15,7 @@ auto Window::instance() -> Window& {
     return instance;
 }
 
-auto Window::set_camera(camera::Camera& camera) -> void {
+auto Window::set_camera(scene::camera::Camera& camera) -> void {
     this->camera = &camera;
 }
 
