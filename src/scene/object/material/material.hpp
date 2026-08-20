@@ -12,12 +12,12 @@ class Material final {
         shader::ShaderProgram& shader_program, const texture::Texture& texture
     );
 
-    Material(const Material&) = delete;
+    Material(const Material&) = default;
     Material(Material&&) = default;
 
     ~Material() = default;
 
-    auto operator=(const Material&) -> Material& = delete;
+    auto operator=(const Material&) -> Material& = default;
     auto operator=(Material&&) -> Material& = default;
 
     auto bind(

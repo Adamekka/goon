@@ -19,7 +19,7 @@ class Camera final {
     math::Matrix<float, 4, 4> projection;
 
     Camera(const Camera&) = delete;
-    Camera(Camera&&) = default;
+    Camera(Camera&&) = delete;
 
     ~Camera() = default;
 
