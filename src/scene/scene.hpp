@@ -8,17 +8,16 @@ namespace goon::scene {
 class Scene final {
   public:
     light::Light light;
-    camera::Camera camera;
+    camera::Camera camera{
+        transform::Transform{},
+        std::numbers::pi_v<float> / 4.0f,
+        4.0f / 3.0f,
+        0.1f,
+        100.0f
+    };
     plf::hive<object::Object> objects;
 
-    constexpr Scene()
-        : camera{camera::Camera{
-              transform::Transform{},
-              std::numbers::pi_v<float> / 4.0f,
-              4.0f / 3.0f,
-              0.1f,
-              100.0f
-          }} {}
+    constexpr Scene() = default;
 
     Scene(const Scene&) = delete;
     Scene(Scene&&) = delete;
