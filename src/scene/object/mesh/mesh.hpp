@@ -14,7 +14,7 @@ class Mesh final {
         : vertices{vertices.begin(), vertices.end()}
         , draw_mode{draw_mode} {}
 
-    explicit Mesh(std::vector<Vertex>&& vertices, MeshDrawMode draw_mode)
+    explicit Mesh(std::vector<Vertex>&& vertices, const MeshDrawMode draw_mode)
         : vertices{std::move(vertices)}
         , draw_mode{draw_mode} {}
 
