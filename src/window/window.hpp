@@ -19,12 +19,11 @@ class Window final {
 
     [[nodiscard]] static auto instance() -> Window&;
 
-    /// Set before calling init()
-    auto set_camera(scene::camera::Camera& camera) -> void;
-
-    auto init() -> void;
+    auto init(scene::camera::Camera& camera) -> void;
 
     auto run(const std::function<void()>& callback) const -> void;
+
+    auto set_camera(scene::camera::Camera& camera) -> void;
 
   private:
     // nullptr means not ready

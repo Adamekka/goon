@@ -15,11 +15,9 @@ auto Window::instance() -> Window& {
     return instance;
 }
 
-auto Window::set_camera(scene::camera::Camera& camera) -> void {
+auto Window::init(scene::camera::Camera& camera) -> void {
     this->camera = &camera;
-}
 
-auto Window::init() -> void {
     // MARK: OpenGL setup
 
     glfwInit();
@@ -97,6 +95,10 @@ auto Window::run(const std::function<void()>& callback) const -> void {
         glfwSwapBuffers(this->window);
         glfwPollEvents();
     }
+}
+
+auto Window::set_camera(scene::camera::Camera& camera) -> void {
+    this->camera = &camera;
 }
 
 } // namespace goon::window

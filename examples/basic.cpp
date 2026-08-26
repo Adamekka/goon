@@ -1,4 +1,3 @@
-#include "core/panic.hpp"
 #include "input/input_manager.hpp"
 #include "scene/scene.hpp"
 #include "window/window.hpp"
@@ -21,13 +20,9 @@ auto main() -> int {
             / static_cast<float>(goon::window::Window::HEIGHT)
     )};
 
-    // MARK: Set camera
-
-    goon::window::Window::instance().set_camera(camera);
-
     // MARK: Create window
 
-    goon::window::Window::instance().init();
+    goon::window::Window::instance().init(camera);
 
     // MARK: Create shader program
 
