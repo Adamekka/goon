@@ -68,8 +68,13 @@ auto Window::init(scene::camera::Camera& camera) -> void {
         }
     };
 
+    auto framebuffer_width{int32_t{}};
+    auto framebuffer_height{int32_t{}};
+    glfwGetFramebufferSize(
+        this->window, &framebuffer_width, &framebuffer_height
+    );
     FRAMEBUFFER_SIZE_CALLBACK(
-        this->window, goon::window::Window::WIDTH, goon::window::Window::HEIGHT
+        this->window, framebuffer_width, framebuffer_height
     );
 
     glfwSetFramebufferSizeCallback(this->window, FRAMEBUFFER_SIZE_CALLBACK);
