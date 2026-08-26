@@ -14,13 +14,13 @@ template<typename T, size_t Columns, size_t Rows>
     )
 class Matrix final {
   public:
-    // MARK: Lifecycle
-
     // OpenGL consumes this flat storage in column-major order with GL_FALSE.
     std::array<T, Columns * Rows> values;
 
-    constexpr explicit Matrix(std::array<T, Columns * Rows> values)
-        : values{std::move(values)} {}
+    // MARK: Lifecycle
+
+    constexpr explicit Matrix(const std::array<T, Columns * Rows> values)
+        : values{values} {}
 
     constexpr explicit Matrix(
         const std::array<std::array<T, Rows>, Columns>& values
