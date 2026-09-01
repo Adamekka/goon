@@ -86,6 +86,24 @@ GOON_SHADER_MATRIX(double, 3, 4, DMat3x4, glUniformMatrix3x4dv)
 GOON_SHADER_MATRIX(double, 4, 2, DMat4x2, glUniformMatrix4x2dv)
 GOON_SHADER_MATRIX(double, 4, 3, DMat4x3, glUniformMatrix4x3dv)
 
+template<typename T>
+    requires requires(const int32_t location, const std::array<T, 3>& data) {
+        ShaderDataTraits<std::array<T, 3>>::SHADER_TYPE;
+        ShaderDataTraits<std::array<T, 3>>::pass(location, data);
+    }
+struct ShaderDataTraits<math::Vector<T>> final {
+    using ArrayData = std::array<T, 3>;
+
+    static constexpr auto SHADER_TYPE{ShaderDataTraits<ArrayData>::SHADER_TYPE};
+
+    static auto pass(const int32_t location, const math::Vector<T>& data)
+        -> void {
+        ShaderDataTraits<ArrayData>::pass(
+            location, ArrayData{data.x, data.y, data.z}
+        );
+    }
+};
+
 #undef GOON_SHADER_MATRIX
 #undef GOON_SHADER_SCALAR
 #undef GOON_SHADER_VECTOR

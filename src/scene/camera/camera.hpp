@@ -36,7 +36,7 @@ class Camera final {
         transform::Position up = {0.0f, 1.0f, 0.0f}
     ) -> void {
         const auto view{math::Matrix<float, 4, 4>::look_at(
-            eye.to_array(), center.to_array(), up.to_array()
+            eye.as_vector(), center.as_vector(), up.as_vector()
         )};
 
         const auto r00{view.get<0, 0>()};

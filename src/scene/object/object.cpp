@@ -15,7 +15,7 @@ auto Object::draw(const camera::Camera& camera, const light::Light& light) const
             normal_matrix,
             view_matrix,
             camera.projection,
-            camera.transform.position.to_array(),
+            camera.transform.position.as_vector(),
             light
         );
         submesh.mesh.draw();

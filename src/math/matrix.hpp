@@ -1,17 +1,13 @@
 #pragma once
 
-#include "core/concepts/floating_scalar.hpp"
 #include "vector.hpp"
 #include <numbers>
 #include <print>
 
 namespace goon::math {
 
-template<typename T, size_t Columns, size_t Rows>
-    requires(
-        Columns >= 2 && Columns <= 4 && Rows >= 2 && Rows <= 4
-        && core::concepts::FloatingScalar<T>
-    )
+template<core::concepts::FloatingScalar T, size_t Columns, size_t Rows>
+    requires(Columns >= 2 && Columns <= 4 && Rows >= 2 && Rows <= 4)
 class Matrix final {
   public:
     // OpenGL consumes this flat storage in column-major order with GL_FALSE.
@@ -59,30 +55,27 @@ class Matrix final {
         return Matrix{values};
     }
 
-    [[nodiscard]] static constexpr auto look_at(
-        const std::array<T, 3>& eye,
-        const std::array<T, 3>& center,
-        const std::array<T, 3>& up
-    ) -> Matrix
+    [[nodiscard]] static constexpr auto
+    look_at(const Vector<T>& eye, const Vector<T>& center, const Vector<T>& up)
+        -> Matrix
         requires(Columns == 4 && Rows == 4)
     {
-        const auto forward{normalize(
-            std::array<T, 3>{
-                center[0] - eye[0], center[1] - eye[1], center[2] - eye[2]
-            }
-        )};
-        const auto side{normalize(cross(forward, up))};
-        const auto corrected_up{cross(side, forward)};
+        const auto forward{Vector<T>{
+            {center.x - eye.x, center.y - eye.y, center.z - eye.z}
+        }.normalized()};
 
-        const auto translation_x{-dot(side, eye)};
-        const auto translation_y{-dot(corrected_up, eye)};
-        const auto translation_z{dot(forward, eye)};
+        const auto side{forward.cross(up).normalized()};
+        const auto corrected_up{side.cross(forward).normalized()};
+
+        const auto translation_x{-side.dot(eye)};
+        const auto translation_y{-corrected_up.dot(eye)};
+        const auto translation_z{forward.dot(eye)};
 
         // clang-format off
         return Matrix{std::array<T, Columns * Rows>{
-            side[0],       corrected_up[0], -forward[0],   0,
-            side[1],       corrected_up[1], -forward[1],   0,
-            side[2],       corrected_up[2], -forward[2],   0,
+            side.x,        corrected_up.x,  -forward.x,    0,
+            side.y,        corrected_up.y,  -forward.y,    0,
+            side.z,        corrected_up.z,  -forward.z,    0,
             translation_x, translation_y,   translation_z, 1
         }};
         // clang-format on
@@ -306,16 +299,16 @@ class Matrix final {
         }
     }
 
-    constexpr auto rotate(const T radians, const std::array<T, 3>& axis) -> void
+    constexpr auto rotate(const T radians, const Vector<T>& axis) -> void
         requires(Columns == 4 && Rows == 4)
     {
-        const auto axis_length{std::hypot(axis[0], axis[1], axis[2])};
+        const auto axis_length{std::hypot(axis.x, axis.y, axis.z)};
         core::assert_that(std::isfinite(axis_length));
         core::assert_that(axis_length > 0);
 
-        const auto x{axis[0] / axis_length};
-        const auto y{axis[1] / axis_length};
-        const auto z{axis[2] / axis_length};
+        const auto x{axis.x / axis_length};
+        const auto y{axis.y / axis_length};
+        const auto z{axis.z / axis_length};
         const auto cosine{std::cos(radians)};
         const auto sine{std::sin(radians)};
         const auto one_minus_cosine{static_cast<T>(1) - cosine};

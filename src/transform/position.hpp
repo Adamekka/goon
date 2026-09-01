@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/assert.hpp"
+#include "math/vector.hpp"
 
 namespace goon::transform {
 
@@ -25,8 +25,8 @@ struct Position final {
     // NOLINTNEXTLINE(fuchsia-overloaded-operator)
     constexpr auto operator==(const Position& other) const -> bool = default;
 
-    [[nodiscard]] constexpr auto to_array() const -> std::array<Value, 3> {
-        return std::array{this->x, this->y, this->z};
+    [[nodiscard]] constexpr auto as_vector() const -> math::Vector<Value> {
+        return math::Vector<Value>{this->x, this->y, this->z};
     }
 };
 
