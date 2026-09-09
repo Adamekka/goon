@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gl.hpp"
+#include "goon/gl.hpp"
 
 namespace goon::scene::object::mesh {
 

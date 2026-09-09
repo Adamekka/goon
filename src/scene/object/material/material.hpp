@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene/light/light.hpp"
+#include "goon/scene/light/light.hpp"
 #include "shader/shader_program.hpp"
 #include "texture/texture.hpp"
 

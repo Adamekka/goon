@@ -1,6 +1,6 @@
-#include "input/input_manager.hpp"
-#include "scene/scene.hpp"
-#include "window/window.hpp"
+#include "goon/input/input_manager.hpp"
+#include "goon/scene/scene.hpp"
+#include "goon/window/window.hpp"
 
 auto main() -> int {
     // MARK: Create scene

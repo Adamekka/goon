@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gl.hpp"
+#include "goon/gl.hpp"
 #include <string_view>
 
 namespace goon::scene::object::material::shader {

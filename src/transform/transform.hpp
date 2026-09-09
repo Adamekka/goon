@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/matrix.hpp"
+#include "goon/math/matrix.hpp"
 #include "position.hpp"
 #include "quaternion.hpp"
 #include "scale.hpp"

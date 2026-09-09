@@ -2,16 +2,25 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS *.cpp)
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
+# require goon/ library include prefix
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/include")
+file(CREATE_LINK
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/goon"
+    SYMBOLIC
+)
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}"
+    PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
+)
+
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-)
-
-target_include_directories(
-    ${PROJECT_NAME}
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE ${CXX_FLAGS})

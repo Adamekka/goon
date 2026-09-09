@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/vector.hpp"
+#include "goon/math/vector.hpp"
 
 namespace goon::transform {
 

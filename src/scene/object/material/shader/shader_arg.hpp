@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/matrix.hpp"
+#include "goon/math/matrix.hpp"
 #include "shader_var_type.hpp"
 
 namespace goon::scene::object::material::shader {

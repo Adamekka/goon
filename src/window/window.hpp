@@ -1,7 +1,7 @@
 #pragma once
 
-#include "gl.hpp"
-#include "scene/camera/camera.hpp"
+#include "goon/gl.hpp"
+#include "goon/scene/camera/camera.hpp"
 #include <functional>
 
 namespace goon::window {

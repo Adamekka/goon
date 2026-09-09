@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/assert.hpp"
-#include "core/concepts/floating_scalar.hpp"
+#include "goon/core/assert.hpp"
+#include "goon/core/concepts/floating_scalar.hpp"
 
 namespace goon::math {
 
