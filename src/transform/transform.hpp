@@ -12,7 +12,7 @@ struct Transform final {
     Quaternion rotation{Quaternion::identity()};
     Scale scale;
 
-    constexpr Transform() = default;
+    Transform() = default;
 
     constexpr Transform(
         const Position position, const Quaternion rotation, const Scale scale

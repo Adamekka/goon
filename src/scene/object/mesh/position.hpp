@@ -12,7 +12,7 @@ struct Position final {
     Value y{0};
     Value z{0};
 
-    constexpr Position() = default;
+    Position() = default;
 
     constexpr Position(const Value x, const Value y, const Value z)
         : x{x}

@@ -16,7 +16,7 @@ struct Vertex final {
         (NormalVector, normal_vector)
     );
 
-    constexpr Vertex() = default;
+    Vertex() = default;
 
     constexpr Vertex(
         const Position position,

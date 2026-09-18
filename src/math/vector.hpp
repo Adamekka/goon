@@ -25,13 +25,13 @@ class Vector final {
         , y{values[1]}
         , z{values[2]} {}
 
-    constexpr Vector(const Vector&) = default;
-    constexpr Vector(Vector&&) = default;
+    Vector(const Vector&) = default;
+    Vector(Vector&&) = default;
 
     ~Vector() = default;
 
-    constexpr auto operator=(const Vector&) -> Vector& = default;
-    constexpr auto operator=(Vector&&) -> Vector& = default;
+    auto operator=(const Vector&) -> Vector& = default;
+    auto operator=(Vector&&) -> Vector& = default;
 
     // MARK: Operations
 

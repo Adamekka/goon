@@ -17,7 +17,7 @@ struct Light final {
   private:
     friend class scene::Scene;
 
-    constexpr Light() = default;
+    Light() = default;
 
     constexpr explicit Light(
         const std::optional<AmbientLight> ambient_light,

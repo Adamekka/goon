@@ -11,7 +11,7 @@ struct Scale final {
     Value y{1.0f};
     Value z{1.0f};
 
-    constexpr Scale() = default;
+    Scale() = default;
 
     constexpr Scale(const Value x, const Value y, const Value z)
         : x{x}
@@ -26,7 +26,7 @@ struct Scale final {
     }
 
     // NOLINTNEXTLINE(fuchsia-overloaded-operator)
-    constexpr auto operator==(const Scale& other) const -> bool = default;
+    auto operator==(const Scale& other) const -> bool = default;
 
     [[nodiscard]] constexpr auto to_array() const -> std::array<Value, 3> {
         return std::array{this->x, this->y, this->z};

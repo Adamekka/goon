@@ -11,7 +11,7 @@ struct Position final {
     Value y{0.0f};
     Value z{0.0f};
 
-    constexpr Position() = default;
+    Position() = default;
 
     constexpr Position(const Value x, const Value y, const Value z)
         : x{x}
@@ -23,7 +23,7 @@ struct Position final {
     }
 
     // NOLINTNEXTLINE(fuchsia-overloaded-operator)
-    constexpr auto operator==(const Position& other) const -> bool = default;
+    auto operator==(const Position& other) const -> bool = default;
 
     [[nodiscard]] constexpr auto as_vector() const -> math::Vector<Value> {
         return math::Vector<Value>{this->x, this->y, this->z};

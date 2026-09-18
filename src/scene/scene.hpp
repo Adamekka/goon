@@ -17,7 +17,7 @@ class Scene final {
     };
     plf::hive<object::Object> objects;
 
-    constexpr Scene() = default;
+    Scene() = default;
 
     Scene(const Scene&) = delete;
     Scene(Scene&&) = delete;

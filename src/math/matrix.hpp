@@ -31,13 +31,13 @@ class Matrix final {
             return flat;
         }()} {}
 
-    constexpr Matrix(const Matrix&) = default;
-    constexpr Matrix(Matrix&&) = default;
+    Matrix(const Matrix&) = default;
+    Matrix(Matrix&&) = default;
 
     ~Matrix() = default;
 
-    constexpr auto operator=(const Matrix&) -> Matrix& = default;
-    constexpr auto operator=(Matrix&&) -> Matrix& = default;
+    auto operator=(const Matrix&) -> Matrix& = default;
+    auto operator=(Matrix&&) -> Matrix& = default;
 
     // MARK: Factory methods
 

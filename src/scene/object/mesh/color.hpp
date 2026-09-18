@@ -11,7 +11,7 @@ struct Color final {
     Value b{1};
     Value a{1};
 
-    constexpr Color() = default;
+    Color() = default;
 
     constexpr Color(const Value r, const Value g, const Value b, const Value a)
         : r{r}
